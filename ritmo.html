@@ -120,6 +120,12 @@ a.pill{text-decoration:none}
 .npv svg{font-size:22px}.npv input{flex:1}
 #ytbox.fs{border-radius:14px;box-shadow:none}
 #ytbox.fs #ytov,#ytbox.fs #ytsz,#ytbox.fs #ytx{display:none}
+.hs{display:flex;gap:14px;overflow-x:auto;padding-bottom:8px;scrollbar-width:none}
+.hs .card{width:140px;flex:none}
+.c2{background:#ffffff0f;border-radius:14px;padding:14px 16px}
+.c2 b{display:block;margin-bottom:6px}
+.c2 p{margin:4px 0;color:var(--mut);font-size:14px}
+#nlyr{white-space:pre-wrap;font:inherit;line-height:1.7;margin:0}
 @media(max-width:760px){
 #app{grid-template-columns:1fr;grid-template-rows:1fr auto auto}
 aside{grid-row:3;grid-column:1;flex-direction:row;padding:6px 8px calc(6px + env(safe-area-inset-bottom));justify-content:space-around;border-top:1px solid var(--line)}
@@ -141,7 +147,8 @@ main{grid-column:1;padding:0 14px 20px}
 <div id="app">
  <aside>
   <div class="logo"><i><svg viewBox="0 0 24 24"><path d="M4 10h3v10H4zM10.5 4h3v16h-3zM17 8h3v12h-3z"/></svg></i>Ritmo</div>
-  <button class="nav on" data-nav="search"><svg viewBox="0 0 24 24"><path d="M10.5 3a7.5 7.5 0 0 1 5.9 12.1l4.3 4.3-1.4 1.4-4.3-4.3A7.5 7.5 0 1 1 10.5 3zm0 2a5.5 5.5 0 1 0 0 11 5.5 5.5 0 0 0 0-11z"/></svg>Buscar</button>
+  <button class="nav on" data-nav="home"><svg viewBox="0 0 24 24"><path d="M12 3l9 8h-2.5v9h-5v-6h-3v6h-5v-9H3z"/></svg>Inicio</button>
+  <button class="nav" data-nav="search"><svg viewBox="0 0 24 24"><path d="M10.5 3a7.5 7.5 0 0 1 5.9 12.1l4.3 4.3-1.4 1.4-4.3-4.3A7.5 7.5 0 1 1 10.5 3zm0 2a5.5 5.5 0 1 0 0 11 5.5 5.5 0 0 0 0-11z"/></svg>Buscar</button>
   <button class="nav" data-nav="lib"><svg viewBox="0 0 24 24"><path d="M4 4h3v16H4zM9 4h3v16H9zM14.2 5.3l2.9-.8 3.9 14.6-2.9.8z"/></svg>Biblioteca</button>
   <button class="nav" data-nav="set"><svg viewBox="0 0 24 24"><path d="M12 8.5a3.5 3.5 0 1 0 0 7 3.5 3.5 0 0 0 0-7zM10.4 2h3.2l.5 2.6 1.8.8 2.2-1.5 2.3 2.3-1.5 2.2.8 1.8 2.6.5v3.2l-2.6.5-.8 1.8 1.5 2.2-2.3 2.3-2.2-1.5-1.8.8-.5 2.6h-3.2l-.5-2.6-1.8-.8-2.2 1.5-2.3-2.3 1.5-2.2-.8-1.8L2 13.6v-3.2l2.6-.5.8-1.8-1.5-2.2 2.3-2.3 2.2 1.5 1.8-.8z"/></svg>Ajustes</button>
  </aside>
@@ -171,6 +178,9 @@ main{grid-column:1;padding:0 14px 20px}
  <div class="bar"><span id="ntc">0:00</span><input type="range" id="nseek" min="0" max="1000" value="0"><span id="ntd">0:00</span></div>
  <div class="btns"><button class="ic sr" id="nsh" aria-label="Aleatorio"><svg viewBox="0 0 24 24"><path d="M3 6h3.5c3 0 4.5 2 6 6s3 6 6 6H21M3 18h3.5c1.6 0 2.8-.6 3.8-1.7M13.7 7.7C14.7 6.6 16 6 17.5 6H21M18 3l3 3-3 3M18 15l3 3-3 3"/></svg></button><button class="ic" id="npv" aria-label="Anterior"><svg viewBox="0 0 24 24"><path d="M6 6h2v12H6zM9.5 12l8.5 6V6z"/></svg></button><button id="npp" aria-label="Reproducir"></button><button class="ic" id="nnx" aria-label="Siguiente"><svg viewBox="0 0 24 24"><path d="M16 6h2v12h-2zM6 18l8.5-6L6 6z"/></svg></button><button class="ic sr" id="nrp" data-r="0" aria-label="Repetir"><svg viewBox="0 0 24 24"><path d="M17 2l4 4-4 4M3 11V9a3 3 0 0 1 3-3h15M7 22l-4-4 4-4M21 13v2a3 3 0 0 1-3 3H3"/></svg></button></div>
  <div class="npv"><svg viewBox="0 0 24 24"><path d="M3 9v6h4l5 4V5L7 9z"/><path d="M16 8.5a5 5 0 0 1 0 7" fill="none" stroke="currentColor" stroke-width="2"/></svg><input type="range" id="nvol" min="0" max="100" value="80" aria-label="Volumen"></div>
+ <div class="c2" id="nin"></div>
+ <div class="c2" id="nbio" hidden></div>
+ <div class="c2"><b>Letra</b><pre id="nlyr"></pre><p>Letras: LRCLIB (comunidad)</p></div>
 </section>
 <dialog id="dlg"></dialog>
 <div id="toast"></div>
@@ -199,7 +209,7 @@ let shown=[], queue=[], qi=-1, cur=null, mode='', tab='songs', term='', stack=[]
 const audio=new Audio(); audio.volume=.8;
 
 /* ---------- datos ---------- */
-const mapIt=r=>({id:'i'+r.trackId,title:r.trackName,artist:r.artistName,album:r.collectionName,art:(r.artworkUrl100||'').replace('100x100','400x400'),dur:(r.trackTimeMillis||30000)/1000,preview:r.previewUrl,src:'it'});
+const mapIt=r=>({id:'i'+r.trackId,title:r.trackName,artist:r.artistName,album:r.collectionName,art:(r.artworkUrl100||'').replace('100x100','400x400'),dur:(r.trackTimeMillis||30000)/1000,preview:r.previewUrl,src:'it',artistId:r.artistId,genre:r.primaryGenreName,year:(r.releaseDate||'').slice(0,4)});
 const mapAu=r=>({id:'a'+r.id,title:r.title,artist:r.user?.name||'',album:'Audius',art:r.artwork?.['480x480']||r.artwork?.['150x150']||'',dur:r.duration,src:'au',stream:`https://api.audius.co/v1/tracks/${r.id}/stream?app_name=ritmo`});
 const isFav=t=>fav.some(f=>f.id===t.id);
 const save=()=>{store.set('fav',fav);store.set('lists',lists)};
@@ -213,15 +223,51 @@ const rows=l=>{shown=l;return l.map(row).join('')};
 const back=()=>stack.length?'<button class="pill" data-back>← Volver</button>':'';
 const markNow=()=>$$('.row').forEach(r=>r.classList.toggle('now',!!cur&&shown[r.dataset.i]?.id===cur.id));
 
+const QS=['Bad Bunny','Rosalía','Dua Lipa','The Weeknd','Karol G','Queen','Coldplay','Lofi','Reggaeton','Rock en español'];
+const setNav=n=>$$('.nav').forEach(b=>b.classList.toggle('on',b.dataset.nav===n));
+const addRec=t=>{const l=store.get('rec',[]).filter(x=>x.id!==t.id);l.unshift(t);store.set('rec',l.slice(0,20))};
+function topArtists(){
+ const m=new Map();
+ for(const t of [...fav,...store.get('rec',[])]){const n=(t.artist||'').split(/,|&/)[0].trim();if(!n)continue;const o=m.get(n)||{name:n,id:t.artistId,c:0};o.c++;if(!o.id)o.id=t.artistId;m.set(n,o)}
+ return [...m.values()].sort((a,b)=>b.c-a.c).slice(0,8);
+}
+const aCard=a=>`<div class="card" ${a.id?`data-artist="${a.id}" data-name="${esc(a.name)}"`:`data-q="${esc(a.name)}"`}><div class="cov art">${esc(a.name[0])}</div><b>${esc(a.name)}</b><span>Artista</span></div>`;
+const alCard=x=>`<div class="card" data-album="${x.collectionId}"><img class="cov" src="${esc((x.artworkUrl100||'').replace('100x100','400x400'))}" alt="" loading="lazy"><b>${esc(x.collectionName)}</b><span>${esc(x.artistName)} · ${(x.releaseDate||'').slice(0,4)}</span></div>`;
+function explore(){
+ $('#tabs').hidden=true;shown=[];stack=[];
+ view(`<h2>Buscar</h2><p class="sub">Escribe arriba una canción, artista o álbum, o prueba con estos:</p><div class="chips" style="margin-top:14px">${QS.map(x=>`<button class="pill" data-q="${esc(x)}">${esc(x)}</button>`).join('')}</div>`);
+}
 function home(){
- $('#tabs').hidden=true; shown=[];
- const qs=['Bad Bunny','Rosalía','Dua Lipa','The Weeknd','Karol G','Queen','Coldplay','Lofi','Reggaeton','Rock en español'];
- view(`<h2>Empieza a escuchar</h2><div class="chips">${qs.map(x=>`<button class="pill" data-q="${esc(x)}">${esc(x)}</button>`).join('')}</div>`+
- (key?'':`<div class="banner"><b>Ahora suenan previews de 30 s.</b><br>Para oír las canciones enteras, añade tu API key de YouTube en Ajustes.</div>`));
+ $('#tabs').hidden=true;shown=[];stack=[];
+ const rec=store.get('rec',[]),art=topArtists(),h=new Date().getHours();
+ view(`<h2>${h<6||h>=21?'Buenas noches':h<13?'Buenos días':'Buenas tardes'}</h2>`+
+ (rec.length?`<div class="sec">Seguir escuchando</div><div class="hs">${rec.slice(0,12).map((t,i)=>`<div class="card" data-rc="${i}"><img class="cov" src="${esc(t.art)}" alt="" loading="lazy"><b>${esc(t.title)}</b><span>${esc(t.artist)}</span></div>`).join('')}</div>`:'')+
+ (art.length?`<div class="sec">Tus artistas</div><div class="hs">${art.map(aCard).join('')}</div>`:'')+
+ '<div id="hnov"></div><div id="htop"></div>'+
+ (rec.length||art.length?'':'<div class="banner"><b>Aquí irá tu música.</b><br>Cuando escuches canciones y marques favoritos, verás tus recientes, tus artistas y las novedades de ellos.</div>')+
+ (key?'':'<div class="banner"><b>Ahora suenan previews de 30 s.</b><br>Para oír las canciones enteras, añade tu API key de YouTube en Ajustes.</div>'));
+ loadNov(art);loadTop();
+}
+async function loadNov(art){
+ const a=art.filter(x=>x.id).slice(0,6);if(!a.length)return;
+ try{
+  const rs=await Promise.all(a.map(x=>j(`https://itunes.apple.com/lookup?country=ES&id=${x.id}&entity=album&limit=15`)));
+  const al=rs.flatMap(r=>r.results.filter(x=>x.wrapperType==='collection')).sort((x,y)=>(y.releaseDate||'').localeCompare(x.releaseDate||'')).slice(0,10);
+  const el=$('#hnov');if(el&&al.length)el.innerHTML=`<div class="sec">Novedades de tus artistas</div><div class="hs">${al.map(alCard).join('')}</div>`;
+ }catch(e){}
+}
+async function loadTop(){
+ try{
+  const d=await fetch('https://rss.applemarketingtools.com/api/v2/es/music/most-played/15/songs.json').then(r=>r.json());
+  const ids=d.feed.results.map(x=>String(x.id)),ord=new Map(ids.map((x,i)=>[x,i]));
+  const l=(await j(`https://itunes.apple.com/lookup?country=ES&id=${ids.join(',')}`)).results.filter(r=>r.previewUrl).sort((a,b)=>ord.get(String(a.trackId))-ord.get(String(b.trackId))).map(mapIt);
+  const el=$('#htop');if(!el||!l.length)return;
+  shown=l;el.innerHTML='<div class="sec">Lo más escuchado en España</div>'+l.map(row).join('');
+ }catch(e){}
 }
 async function search(q){
- term=q.trim(); if(!term)return home();
- $('#tabs').hidden=false; stack=[]; loading();
+ term=q.trim(); if(!term)return explore();
+ $('#tabs').hidden=false; stack=[]; setNav('search'); loading();
  const e=encodeURIComponent(term), base='https://itunes.apple.com/search?country=ES&term='+e;
  try{
   if(tab==='songs'){const d=await j(base+'&media=music&entity=song&limit=30'); const l=d.results.filter(r=>r.previewUrl).map(mapIt); l.length?view(`<h2>Canciones</h2>${rows(l)}`):empty('Sin resultados.')}
@@ -296,7 +342,7 @@ async function findVideo(t){
  }catch(e){toast('YouTube no responde (¿clave o cuota?)');return null}
 }
 async function playCur(){
- const t=queue[qi]; if(!t)return; cur=t; const my=++tok; stopAll(); bar(); markNow();
+ const t=queue[qi]; if(!t)return; cur=t; addRec(t); const my=++tok; stopAll(); bar(); markNow();
  if(t.src==='au')return playAudio(t.stream,'Completa · Audius',true);
  if(key){loadYT(); const v=await findVideo(t); if(my!==tok)return; if(v&&window.YT&&YT.Player){return playYT(v)}}
  if(my===tok)playAudio(t.preview,'Preview 30 s');
@@ -355,7 +401,8 @@ document.addEventListener('click',e=>{
  if(el=g('[data-pl]'))return openPl(el.dataset.pl);
  if(el=g('[data-back]')){const p=stack.pop();shown=p.s;view(p.h);return}
  if(el=g('[data-playall]')){if(shown.length)play(shown,0);return}
- if(el=g('[data-nav]')){$$('.nav').forEach(n=>n.classList.toggle('on',n===el));const n=el.dataset.nav;return n==='lib'?lib():n==='set'?settings():($('#q').value?search($('#q').value):home())}
+ if(el=g('[data-rc]')){return play(store.get('rec',[]),+el.dataset.rc)}
+ if(el=g('[data-nav]')){const n=el.dataset.nav;if(n!=='set')setNav(n);return n==='lib'?lib():n==='set'?settings():n==='home'?home():($('#q').value?search($('#q').value):explore())}
  if(el=g('.row'))return play(shown,+el.dataset.i);
 });
 function addDlg(){
@@ -435,11 +482,40 @@ function npInfo(){
  $('#npa').src=cur.art;$('#npt').textContent=cur.title;$('#nps').textContent=cur.artist;
  $('#nph').classList.toggle('on',isFav(cur));
  $('#nly').href='https://www.google.com/search?q='+encodeURIComponent('letra '+cur.title+' '+cur.artist);
+ $('#nin').innerHTML=`<b>Sobre la canción</b><p>${esc(cur.title)} · ${esc(cur.artist)}</p><p>${[cur.album,cur.year,cur.genre].filter(Boolean).map(esc).join(' · ')}</p>`;
+ if(npOpen){loadLyr();loadBio()}
 }
 function npTick(c,d){
  $('#npp').innerHTML=isPlaying()?IC.pause:IC.play;
  if(!nsk){const p=d?c/d*1000:0;$('#nseek').value=p;$('#nseek').style.setProperty('--p',p/10+'%')}
  $('#ntc').textContent=fmt(c);$('#ntd').textContent=fmt(d);
+}
+const lyc={},bioc={};
+async function loadLyr(){
+ const t=cur,el=$('#nlyr');if(!t)return;
+ if(lyc[t.id]===undefined){
+  el.textContent='Buscando letra…';
+  try{
+   const cl=x=>x.replace(/\s*[\(\[].*?[\)\]]/g,'').replace(/\s+-\s+.*$/,'').trim(),ar=(t.artist||'').split(/,|&| feat\.?| ft\.?/i)[0].trim();
+   const r=await fetch(`https://lrclib.net/api/search?track_name=${encodeURIComponent(cl(t.title))}&artist_name=${encodeURIComponent(ar)}`).then(r=>r.json());
+   const b=(r||[]).filter(x=>x.plainLyrics).sort((a,b)=>Math.abs(a.duration-t.dur)-Math.abs(b.duration-t.dur))[0];
+   lyc[t.id]=b?b.plainLyrics:'';
+  }catch(e){if(cur===t)el.textContent='No he podido cargar la letra ahora mismo.';return}
+ }
+ if(cur===t)el.textContent=lyc[t.id]||'No he encontrado la letra de esta canción. Prueba el botón «Letra» de arriba.';
+}
+async function loadBio(){
+ const t=cur,el=$('#nbio'),n=(t.artist||'').split(/,|&/)[0].trim();
+ if(!n){el.hidden=true;return}
+ if(bioc[n]===undefined){
+  bioc[n]='';
+  try{
+   const d=await fetch('https://es.wikipedia.org/api/rest_v1/page/summary/'+encodeURIComponent(n)).then(r=>r.json());
+   if(d.type==='standard'&&/cantante|banda|m[uú]sic|grupo|d[uú]o|rapero|compositor|productor|DJ|raper/i.test(d.extract||''))bioc[n]=d.extract.length>420?d.extract.slice(0,420).replace(/\s\S*$/,'')+'…':d.extract;
+  }catch(e){delete bioc[n]}
+ }
+ if(cur!==t)return;
+ el.hidden=!bioc[n];el.innerHTML=bioc[n]?`<b>Sobre ${esc(n)}</b><p>${esc(bioc[n])}</p><p>Fuente: Wikipedia</p>`:'';
 }
 function openNP(){if(!cur)return;npOpen=true;$('#np').hidden=false;npInfo();const nv=$('#nvol');nv.value=vl.value;nv.style.setProperty('--p',nv.value+'%');layoutNP()}
 function closeNP(){npOpen=false;$('#np').hidden=true;if($('#ytbox').classList.contains('fs'))unfs()}
