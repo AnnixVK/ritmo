@@ -246,7 +246,12 @@ function playAudio(url,label,full){
 }
 function playYT(v){
  setMode('yt','Completa · YouTube',true);$('#ytbox').hidden=false;$('#ytbox').classList.toggle('off',ytHide);fitYT();
- clearTimeout(ytT);ytT=setTimeout(()=>{if(mode==='yt'){let st=-1;try{st=yt.getPlayerState()}catch(e){}if(st!==1&&st!==3)fallback()}},7000);
+ clearTimeout(ytT);ytT=setTimeout(()=>{
+  if(mode!=='yt')return;let st=-1;try{st=yt.getPlayerState()}catch(e){}
+  if(st===1||st===3)return;
+  toast('Si no arranca, pulsa play ▶');
+  ytT=setTimeout(()=>{if(mode!=='yt')return;let s2=-1;try{s2=yt.getPlayerState()}catch(e){}if(s2!==1&&s2!==2&&s2!==3)fallback()},25000);
+ },7000);
  if(!yt){yt=new YT.Player('yt',{width:'100%',height:'100%',videoId:v,playerVars:{autoplay:1,playsinline:1,rel:0,controls:0},events:{onReady:e=>{e.target.setVolume($('#vol').value);e.target.playVideo()},onStateChange:e=>{if(e.data===1)clearTimeout(ytT);if(e.data===0)next(true)},onError:()=>fallback()}})}
  else yt.loadVideoById(v);
 }
