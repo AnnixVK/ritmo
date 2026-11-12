@@ -134,6 +134,18 @@ dialog .ql{max-height:50vh;overflow:auto;margin:8px 0}
 .qi.now{background:var(--p2)}.qi.now b{color:var(--acc)}
 .qi img{width:40px;height:40px;border-radius:6px;object-fit:cover;background:var(--p2)}
 .qi .m{flex:1}
+.lr{display:flex;align-items:center;gap:14px;padding:8px;border-radius:12px;cursor:pointer}
+.lr:hover{background:var(--panel)}
+.lr .lc{width:64px;height:64px;border-radius:8px;object-fit:cover;flex:none;background:linear-gradient(135deg,#2b2b3a,#3a2a4f);display:grid;place-items:center;font-size:26px;font-weight:800;color:#fff}
+.lr .lc.fav{background:linear-gradient(135deg,#6b2fff,var(--acc2));font-size:30px}
+.lr .m b{font-size:16px}
+.lh{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:6px}
+.lh b{margin:0!important}
+.lh .pill{padding:4px 10px;font-size:12px}
+#nlbox{position:relative;max-height:45vh;overflow:auto}
+.ll{display:block;min-height:1.2em;padding:3px 0;color:var(--mut);transition:color .25s}
+.ll.on{color:var(--text);font-weight:700}
+#nlyr.plain .ll{color:var(--text)}
 @media(max-width:760px){
 #app{grid-template-columns:1fr;grid-template-rows:1fr auto auto}
 aside{grid-row:3;grid-column:1;flex-direction:row;padding:6px 8px calc(6px + env(safe-area-inset-bottom));justify-content:space-around;border-top:1px solid var(--line)}
@@ -170,7 +182,7 @@ main{grid-column:1;padding:0 14px 20px}
   <div id="view"></div>
  </main>
  <footer id="player">
-  <div class="pi"><img id="pa" alt=""><div class="m"><b id="pt">Nada sonando</b><span id="pn">Busca una canción</span></div><button class="ic" id="ph" aria-label="Favorito"><svg viewBox="0 0 24 24"><path d="M12 21s-7-4.5-9.3-9A5.2 5.2 0 0 1 12 6.5 5.2 5.2 0 0 1 21.3 12C19 16.5 12 21 12 21z"/></svg></button><button class="ic" id="pe" aria-label="Abrir reproductor"><svg viewBox="0 0 24 24"><path d="M6 15l6-6 6 6"/></svg></button></div>
+  <div class="pi"><img id="pa" alt=""><div class="m"><b id="pt">Nada sonando</b><span id="pn">Busca una canción</span></div><button class="ic" id="ph" aria-label="Favorito"><svg viewBox="0 0 24 24"><path d="M12 21s-7-4.5-9.3-9A5.2 5.2 0 0 1 12 6.5 5.2 5.2 0 0 1 21.3 12C19 16.5 12 21 12 21z"/></svg></button><button class="ic" id="pl2" aria-label="Añadir a playlist"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg></button><button class="ic" id="pe" aria-label="Abrir reproductor"><svg viewBox="0 0 24 24"><path d="M6 15l6-6 6 6"/></svg></button></div>
   <div class="pc">
    <div class="btns"><button class="ic sr" id="sh" aria-label="Aleatorio"><svg viewBox="0 0 24 24"><path d="M3 6h3.5c3 0 4.5 2 6 6s3 6 6 6H21M3 18h3.5c1.6 0 2.8-.6 3.8-1.7M13.7 7.7C14.7 6.6 16 6 17.5 6H21M18 3l3 3-3 3M18 15l3 3-3 3"/></svg></button><button class="ic" id="pv" aria-label="Anterior"><svg viewBox="0 0 24 24"><path d="M6 6h2v12H6zM9.5 12l8.5 6V6z"/></svg></button><button id="pp" aria-label="Reproducir"></button><button class="ic" id="nx" aria-label="Siguiente"><svg viewBox="0 0 24 24"><path d="M16 6h2v12h-2zM6 18l8.5-6L6 6z"/></svg></button><button class="ic sr" id="rp" data-r="0" aria-label="Repetir"><svg viewBox="0 0 24 24"><path d="M17 2l4 4-4 4M3 11V9a3 3 0 0 1 3-3h15M7 22l-4-4 4-4M21 13v2a3 3 0 0 1-3 3H3"/></svg></button></div>
    <div class="bar"><span id="tc">0:00</span><input type="range" id="seek" min="0" max="1000" value="0"><span id="td">0:00</span></div>
@@ -182,14 +194,14 @@ main{grid-column:1;padding:0 14px 20px}
 <section id="np" hidden>
  <div class="nph"><button class="ic" id="ncl" aria-label="Cerrar"><svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg></button><b>Reproduciendo</b><a class="pill" id="nly" target="_blank" rel="noopener">Letra</a></div>
  <div id="npm" class="sq"><img id="npa" alt=""></div>
- <div class="npi"><div class="m"><b id="npt"></b><span id="nps"></span></div><button class="ic" id="nph" aria-label="Favorito"><svg viewBox="0 0 24 24"><path d="M12 21s-7-4.5-9.3-9A5.2 5.2 0 0 1 12 6.5 5.2 5.2 0 0 1 21.3 12C19 16.5 12 21 12 21z"/></svg></button></div>
+ <div class="npi"><div class="m"><b id="npt"></b><span id="nps"></span></div><button class="ic" id="npl" aria-label="Añadir a playlist"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg></button><button class="ic" id="nph" aria-label="Favorito"><svg viewBox="0 0 24 24"><path d="M12 21s-7-4.5-9.3-9A5.2 5.2 0 0 1 12 6.5 5.2 5.2 0 0 1 21.3 12C19 16.5 12 21 12 21z"/></svg></button></div>
  <div class="bar"><span id="ntc">0:00</span><input type="range" id="nseek" min="0" max="1000" value="0"><span id="ntd">0:00</span></div>
  <div class="btns"><button class="ic sr" id="nsh" aria-label="Aleatorio"><svg viewBox="0 0 24 24"><path d="M3 6h3.5c3 0 4.5 2 6 6s3 6 6 6H21M3 18h3.5c1.6 0 2.8-.6 3.8-1.7M13.7 7.7C14.7 6.6 16 6 17.5 6H21M18 3l3 3-3 3M18 15l3 3-3 3"/></svg></button><button class="ic" id="npv" aria-label="Anterior"><svg viewBox="0 0 24 24"><path d="M6 6h2v12H6zM9.5 12l8.5 6V6z"/></svg></button><button id="npp" aria-label="Reproducir"></button><button class="ic" id="nnx" aria-label="Siguiente"><svg viewBox="0 0 24 24"><path d="M16 6h2v12h-2zM6 18l8.5-6L6 6z"/></svg></button><button class="ic sr" id="nrp" data-r="0" aria-label="Repetir"><svg viewBox="0 0 24 24"><path d="M17 2l4 4-4 4M3 11V9a3 3 0 0 1 3-3h15M7 22l-4-4 4-4M21 13v2a3 3 0 0 1-3 3H3"/></svg></button></div>
  <div class="npv"><svg viewBox="0 0 24 24"><path d="M3 9v6h4l5 4V5L7 9z"/><path d="M16 8.5a5 5 0 0 1 0 7" fill="none" stroke="currentColor" stroke-width="2"/></svg><input type="range" id="nvol" min="0" max="100" value="80" aria-label="Volumen"></div>
  <div class="acts"><button class="pill" id="nq">Cola</button><button class="pill" id="nsl">Dormir</button><button class="pill" id="nsr">Compartir</button></div>
  <div class="c2" id="nin"></div>
  <div class="c2" id="nbio" hidden></div>
- <div class="c2"><b>Letra</b><pre id="nlyr"></pre><p>Letras: LRCLIB (comunidad)</p></div>
+ <div class="c2"><div class="lh"><b>Letra</b><span id="nlo" hidden><button class="pill" data-off="0.5">Más pronto</button> <button class="pill" data-off="-0.5">Más tarde</button></span></div><div id="nlbox"><div id="nlyr"></div></div><p>Letras: LRCLIB (comunidad)</p></div>
 </section>
 <dialog id="dlg"></dialog>
 <div id="toast"></div>
@@ -224,7 +236,7 @@ const isFav=t=>fav.some(f=>f.id===t.id);
 const save=()=>{store.set('fav',fav);store.set('lists',lists)};
 
 /* ---------- vistas ---------- */
-const view=h=>{$('#view').innerHTML=h;$('main').scrollTop=0;markNow()};
+const view=h=>{$('#view').innerHTML=h;$('main').scrollTop=0;markNow();fillArtists()};
 const loading=()=>view('<p class="sub" style="margin-top:20px">Buscando…</p>');
 const empty=m=>view(`<p class="banner">${m}</p>`);
 const row=(t,i)=>`<div class="row" data-i="${i}"><img src="${esc(t.art)}" alt="" loading="lazy"><div class="m"><b>${esc(t.title)}</b><span>${esc(t.artist)}</span></div><span class="al">${esc(t.album)}</span><button class="ic ${isFav(t)?'on':''}" data-fav="${i}" aria-label="Favorito">${IC.heart}</button><button class="ic" data-add="${i}" aria-label="Añadir a playlist">${IC.plus}</button><span class="du">${fmt(t.dur)}</span></div>`;
@@ -240,7 +252,7 @@ function topArtists(){
  for(const t of [...fav,...store.get('rec',[])]){const n=(t.artist||'').split(/,|&/)[0].trim();if(!n)continue;const o=m.get(n)||{name:n,id:t.artistId,c:0};o.c++;if(!o.id)o.id=t.artistId;m.set(n,o)}
  return [...m.values()].sort((a,b)=>b.c-a.c).slice(0,8);
 }
-const aCard=a=>`<div class="card" ${a.id?`data-artist="${a.id}" data-name="${esc(a.name)}"`:`data-q="${esc(a.name)}"`}><div class="cov art">${esc(a.name[0])}</div><b>${esc(a.name)}</b><span>Artista</span></div>`;
+const aCard=a=>`<div class="card" ${a.id?`data-artist="${a.id}" data-name="${esc(a.name)}"`:`data-q="${esc(a.name)}"`}><div class="cov art" data-an="${esc(a.name)}">${esc(a.name[0])}</div><b>${esc(a.name)}</b><span>Artista</span></div>`;
 const alCard=x=>`<div class="card" data-album="${x.collectionId}"><img class="cov" src="${esc((x.artworkUrl100||'').replace('100x100','400x400'))}" alt="" loading="lazy"><b>${esc(x.collectionName)}</b><span>${esc(x.artistName)} · ${(x.releaseDate||'').slice(0,4)}</span></div>`;
 function explore(){
  $('#tabs').hidden=true;shown=[];stack=[];
@@ -280,7 +292,7 @@ async function search(q){
  const e=encodeURIComponent(term), base='https://itunes.apple.com/search?country=ES&term='+e;
  try{
   if(tab==='songs'){const d=await j(base+'&media=music&entity=song&limit=30'); const l=d.results.filter(r=>r.previewUrl).map(mapIt); l.length?view(`<h2>Canciones</h2>${rows(l)}`):empty('Sin resultados.')}
-  else if(tab==='artists'){const d=await j(base+'&entity=musicArtist&limit=20'); view(`<h2>Artistas</h2><div class="grid">${d.results.map(a=>`<div class="card" data-artist="${a.artistId}" data-name="${esc(a.artistName)}"><div class="cov art">${esc(a.artistName[0])}</div><b>${esc(a.artistName)}</b><span>${esc(a.primaryGenreName||'Artista')}</span></div>`).join('')}</div>`)}
+  else if(tab==='artists'){const d=await j(base+'&entity=musicArtist&limit=20'); view(`<h2>Artistas</h2><div class="grid">${d.results.map(a=>`<div class="card" data-artist="${a.artistId}" data-name="${esc(a.artistName)}"><div class="cov art" data-an="${esc(a.artistName)}">${esc(a.artistName[0])}</div><b>${esc(a.artistName)}</b><span>${esc(a.primaryGenreName||'Artista')}</span></div>`).join('')}</div>`)}
   else if(tab==='albums'){const d=await j(base+'&entity=album&limit=24'); view(`<h2>Álbumes</h2><div class="grid">${d.results.map(a=>`<div class="card" data-album="${a.collectionId}"><img class="cov" src="${esc((a.artworkUrl100||'').replace('100x100','400x400'))}" alt="" loading="lazy"><b>${esc(a.collectionName)}</b><span>${esc(a.artistName)}</span></div>`).join('')}</div>`)}
   else {const d=await j(`https://api.audius.co/v1/tracks/search?limit=30&app_name=ritmo&query=${e}`); const l=(d.data||[]).map(mapAu); l.length?view(`<h2>Audius · canciones completas</h2>${rows(l)}`):empty('Sin resultados en Audius.')}
  }catch(err){empty('No se pudo buscar ('+esc(err.message)+'). Revisa tu conexión e inténtalo otra vez.')}
@@ -292,7 +304,7 @@ async function openArtist(id,name){
   const [s,a]=await Promise.all([j(`https://itunes.apple.com/lookup?country=ES&id=${id}&entity=song&limit=15`),j(`https://itunes.apple.com/lookup?country=ES&id=${id}&entity=album&limit=20`)]);
   const songs=s.results.filter(r=>r.wrapperType==='track'&&r.previewUrl).map(mapIt);
   const albums=a.results.filter(r=>r.wrapperType==='collection');
-  view(back()+`<div class="hero"><div class="cov art">${esc(name[0])}</div><div><h1>${esc(name)}</h1><button class="btn" data-playall>Reproducir</button></div></div><div class="sec">Populares</div>${rows(songs)}<div class="sec">Álbumes</div><div class="grid">${albums.map(x=>`<div class="card" data-album="${x.collectionId}"><img class="cov" src="${esc((x.artworkUrl100||'').replace('100x100','400x400'))}" alt="" loading="lazy"><b>${esc(x.collectionName)}</b><span>${esc((x.releaseDate||'').slice(0,4))}</span></div>`).join('')}</div>`);
+  view(back()+`<div class="hero"><div class="cov art" data-an="${esc(name)}">${esc(name[0])}</div><div><h1>${esc(name)}</h1><button class="btn" data-playall>Reproducir</button></div></div><div class="sec">Populares</div>${rows(songs)}<div class="sec">Álbumes</div><div class="grid">${albums.map(x=>`<div class="card" data-album="${x.collectionId}"><img class="cov" src="${esc((x.artworkUrl100||'').replace('100x100','400x400'))}" alt="" loading="lazy"><b>${esc(x.collectionName)}</b><span>${esc((x.releaseDate||'').slice(0,4))}</span></div>`).join('')}</div>`);
  }catch(e){empty('No se pudo cargar el artista.')}
 }
 async function openAlbum(id){
@@ -303,13 +315,20 @@ async function openAlbum(id){
   view(back()+`<div class="hero"><img class="cov" src="${esc((c.artworkUrl100||'').replace('100x100','500x500'))}" alt=""><div><h1>${esc(c.collectionName)}</h1><p class="sub">${esc(c.artistName)} · ${(c.releaseDate||'').slice(0,4)}</p><button class="btn" data-playall>Reproducir</button></div></div>${rows(l)}`);
  }catch(e){empty('No se pudo cargar el álbum.')}
 }
-function lib(){
- $('#tabs').hidden=true; stack=[]; shown=[];
- view(`<h2>Tu biblioteca</h2><div class="grid"><div class="card" data-pl="fav"><div class="cov fav">${IC.heart}</div><b>Favoritos</b><span>${fav.length} canciones</span></div>${lists.map((l,i)=>`<div class="card" data-pl="${i}"><div class="cov pl">${esc((l.name[0]||'♪').toUpperCase())}</div><b>${esc(l.name)}</b><span>${l.tracks.length} canciones</span></div>`).join('')}<div class="card add" data-newpl><div class="cov">+</div><b>Nueva playlist</b></div></div>`);
+let libTab='lists';
+const lcov=(a,f,n)=>a?`<img class="lc" src="${esc(a)}" alt="" loading="lazy">`:`<div class="lc ${f?'fav':''}">${f?IC.heart:esc((n[0]||'♪').toUpperCase())}</div>`;
+function lib(t){
+ if(t)libTab=t;$('#tabs').hidden=true;stack=[];shown=[];
+ const pills=[['lists','Listas'],['fav','Favoritos'],['rec','Recientes']].map(([k,l])=>`<button class="pill ${libTab===k?'on':''}" data-lt="${k}">${l}</button>`).join('')+'<button class="pill" data-newpl>+ Crear lista</button>';
+ let b;
+ if(libTab==='fav')b=fav.length?`<button class="btn" data-playall>Reproducir</button><div style="margin-top:10px">${rows(fav)}</div>`:'<p class="banner">Aún no tienes favoritos. Pulsa el corazón en cualquier canción.</p>';
+ else if(libTab==='rec'){const r=store.get('rec',[]);b=r.length?rows(r):'<p class="banner">Aquí verás lo último que has escuchado.</p>'}
+ else b=`<div class="lr" data-pl="fav">${lcov(fav.length?fav[fav.length-1].art:'',true,'')}<div class="m"><b>Favoritos</b><span>Lista · ${fav.length} canciones</span></div></div>`+lists.map((l,i)=>`<div class="lr" data-pl="${i}">${lcov(l.tracks.length?l.tracks[l.tracks.length-1].art:'',false,l.name)}<div class="m"><b>${esc(l.name)}</b><span>Lista · ${l.tracks.length} canciones</span></div></div>`).join('');
+ view(`<h2>Tu biblioteca</h2><div class="hs" style="margin-bottom:12px">${pills}</div>${b}`);
 }
 function openPl(x){
  push(); const f=x==='fav', l=f?{name:'Favoritos',tracks:fav}:lists[x];
- view(back()+`<div class="hero"><div class="cov ${f?'fav':'pl'}">${f?IC.heart:esc((l.name[0]||'♪').toUpperCase())}</div><div><h1>${esc(l.name)}</h1><p class="sub">${l.tracks.length} canciones</p><button class="btn" data-playall>Reproducir</button>${f?'':`<button class="btn g" data-delpl="${x}">Borrar</button>`}</div></div>`+(l.tracks.length?rows(l.tracks):'<p class="banner">Aún no hay canciones. Pulsa + en cualquier canción para añadirla.</p>'));
+ view(back()+`<div class="hero">${l.tracks.length?`<img class="cov" src="${esc(l.tracks[l.tracks.length-1].art)}" alt="">`:`<div class="cov ${f?'fav':'pl'}">${f?IC.heart:esc((l.name[0]||'♪').toUpperCase())}</div>`}<div><h1>${esc(l.name)}</h1><p class="sub">${l.tracks.length} canciones</p><button class="btn" data-playall>Reproducir</button>${f?'':`<button class="btn g" data-delpl="${x}">Borrar</button>`}</div></div>`+(l.tracks.length?rows(l.tracks):'<p class="banner">Aún no hay canciones. Pulsa + en cualquier canción para añadirla.</p>'));
 }
 function settings(){
  dlg(`<h3>Ajustes</h3><p><b>API key de YouTube Data v3</b> (gratis). Se guarda solo en este dispositivo.</p><input type="password" id="kin" placeholder="AIza…" value="${esc(key)}"><p>Créala en <a href="https://console.cloud.google.com/apis/library/youtube.googleapis.com" target="_blank" rel="noopener">Google Cloud</a>: activa «YouTube Data API v3» y crea una clave de API.</p><button class="btn" data-savekey>Guardar</button><button class="btn g" data-close>Cerrar</button>`);
@@ -399,8 +418,8 @@ document.addEventListener('click',e=>{
  if(el=g('[data-fav]')){const t=shown[el.dataset.fav];toggleFav(t);el.classList.toggle('on',isFav(t));return}
  if(el=g('[data-add]')){pend=shown[el.dataset.add];return addDlg()}
  if(el=g('[data-addpl]')){lists[el.dataset.addpl].tracks.push(pend);save();$('#dlg').close();return toast('Añadida a «'+lists[el.dataset.addpl].name+'»')}
- if(el=g('[data-newpl]')){if(el.classList.contains('card'))pend=null;return dlg('<h3>Nueva playlist</h3><input type="text" id="pname" placeholder="Nombre" maxlength="40"><button class="btn" data-mkpl>Crear</button><button class="btn g" data-close>Cancelar</button>')}
- if(el=g('[data-mkpl]')){const n=$('#pname').value.trim();if(!n)return;lists.push({name:n,tracks:pend?[pend]:[]});if(pend)toast('Añadida a «'+n+'»');pend=null;save();$('#dlg').close();if($('#view h2')?.textContent==='Tu biblioteca')lib();return}
+ if(el=g('[data-newpl]')){if(!el.classList.contains('li'))pend=null;return dlg('<h3>Nueva playlist</h3><input type="text" id="pname" placeholder="Nombre" maxlength="40"><button class="btn" data-mkpl>Crear</button><button class="btn g" data-close>Cancelar</button>')}
+ if(el=g('[data-mkpl]')){const n=$('#pname').value.trim();if(!n)return;lists.push({name:n,tracks:pend?[pend]:[]});if(pend)toast('Añadida a «'+n+'»');pend=null;save();$('#dlg').close();if($('#view [data-lt]'))lib();return}
  if(el=g('[data-delpl]')){const i=el.dataset.delpl;return dlg(`<h3>¿Borrar «${esc(lists[i].name)}»?</h3><button class="btn" data-rmpl="${i}">Borrar</button><button class="btn g" data-close>Cancelar</button>`)}
  if(el=g('[data-rmpl]')){lists.splice(el.dataset.rmpl,1);save();$('#dlg').close();return lib()}
  if(el=g('[data-close]'))return $('#dlg').close();
@@ -417,6 +436,8 @@ document.addEventListener('click',e=>{
  if(el=g('[data-qx]')){const i=+el.dataset.qx;if(i===qi)return toast('Esa es la que suena');queue.splice(i,1);if(i<qi)qi--;hist=[];return qDlg()}
  if(el=g('[data-qj]')){qi=+el.dataset.qj;$('#dlg').close();return playCur()}
  if(el=g('[data-sl]')){const v=el.dataset.sl;sleepAt=0;sleepEnd=false;if(v==='end')sleepEnd=true;else if(+v>0)sleepAt=Date.now()+v*60000;$('#nsl').classList.toggle('act',!!(sleepAt||sleepEnd));$('#dlg').close();return toast(v==='0'?'Temporizador desactivado':v==='end'?'Pararé al acabar esta canción':'Pararé en '+v+' min')}
+ if(el=g('[data-lt]'))return lib(el.dataset.lt);
+ if(el=g('[data-off]')){const t=cur;if(!t)return;lyoff[t.id]=Math.round(((lyoff[t.id]||0)+ +el.dataset.off)*10)/10;lyIdx=-2;const o=lyoff[t.id];return toast(o===0?'Letra sin ajuste':'Letra '+(o>0?'más pronto':'más tarde')+' '+Math.abs(o).toString().replace('.',',')+' s')}
  if(el=g('[data-rc]')){return play(store.get('rec',[]),+el.dataset.rc)}
  if(el=g('[data-nav]')){const n=el.dataset.nav;if(n!=='set')setNav(n);return n==='lib'?lib():n==='set'?settings():n==='home'?home():($('#q').value?search($('#q').value):explore())}
  if(el=g('.row'))return play(shown,+el.dataset.i);
@@ -505,20 +526,38 @@ function npTick(c,d){
  $('#npp').innerHTML=isPlaying()?IC.pause:IC.play;
  if(!nsk){const p=d?c/d*1000:0;$('#nseek').value=p;$('#nseek').style.setProperty('--p',p/10+'%')}
  $('#ntc').textContent=fmt(c);$('#ntd').textContent=fmt(d);
+ lySync(c);
 }
 const lyc={},bioc={};
+const lyoff={};let lyIdx=-1;
+const parseLrc=x=>{const o=[];for(const l of x.split('\n')){const m=l.match(/^((?:\[\d+:\d+(?:\.\d+)?\])+)(.*)$/);if(!m)continue;for(const st of m[1].match(/\[\d+:\d+(?:\.\d+)?\]/g)){const q=st.match(/\[(\d+):(\d+(?:\.\d+)?)\]/);o.push({t:+q[1]*60+ +q[2],x:m[2].trim()})}}return o.sort((a,b)=>a.t-b.t)};
+function renderLyr(){
+ const L=lyc[cur.id],el=$('#nlyr');lyIdx=-1;$('#nlbox').scrollTop=0;
+ if(L&&L.s&&L.s.length){el.innerHTML=L.s.map(l=>`<span class="ll">${esc(l.x)||'&nbsp;'}</span>`).join('');$('#nlo').hidden=false}
+ else if(L&&L.p){el.textContent=L.p;$('#nlo').hidden=true}
+ else{el.textContent='No he encontrado la letra de esta canción. Prueba el botón «Letra» de arriba.';$('#nlo').hidden=true}
+}
+function lySync(c){
+ const t=cur,L=t&&lyc[t.id],ok=mode==='yt'||(t&&t.src==='au');
+ $('#nlyr').classList.toggle('plain',!ok);
+ if(!ok||!L||!L.s||!L.s.length)return;
+ const x=c+(lyoff[t.id]||0);let i=-1;for(let k=0;k<L.s.length;k++){if(L.s[k].t<=x)i=k;else break}
+ if(i===lyIdx)return;lyIdx=i;
+ const ls=$$('#nlyr .ll');ls.forEach((e,k)=>e.classList.toggle('on',k===i));
+ const e=ls[i],b=$('#nlbox');if(e)b.scrollTo({top:e.offsetTop-b.clientHeight/2+e.clientHeight/2,behavior:'smooth'});
+}
 async function loadLyr(){
- const t=cur,el=$('#nlyr');if(!t)return;
+ const t=cur;if(!t)return;
  if(lyc[t.id]===undefined){
-  el.textContent='Buscando letra…';
+  $('#nlyr').textContent='Buscando letra…';$('#nlo').hidden=true;
   try{
    const cl=x=>x.replace(/\s*[\(\[].*?[\)\]]/g,'').replace(/\s+-\s+.*$/,'').trim(),ar=(t.artist||'').split(/,|&| feat\.?| ft\.?/i)[0].trim();
    const r=await fetch(`https://lrclib.net/api/search?track_name=${encodeURIComponent(cl(t.title))}&artist_name=${encodeURIComponent(ar)}`).then(r=>r.json());
-   const b=(r||[]).filter(x=>x.plainLyrics).sort((a,b)=>Math.abs(a.duration-t.dur)-Math.abs(b.duration-t.dur))[0];
-   lyc[t.id]=b?b.plainLyrics:'';
-  }catch(e){if(cur===t)el.textContent='No he podido cargar la letra ahora mismo.';return}
+   const b=(r||[]).filter(x=>x.plainLyrics||x.syncedLyrics).sort((a,b)=>Math.abs(a.duration-t.dur)-Math.abs(b.duration-t.dur))[0];
+   lyc[t.id]=b?{p:b.plainLyrics||'',s:b.syncedLyrics?parseLrc(b.syncedLyrics):null}:{p:'',s:null};
+  }catch(e){if(cur===t)$('#nlyr').textContent='No he podido cargar la letra ahora mismo.';return}
  }
- if(cur===t)el.textContent=lyc[t.id]||'No he encontrado la letra de esta canción. Prueba el botón «Letra» de arriba.';
+ if(cur===t)renderLyr();
 }
 async function loadBio(){
  const t=cur,el=$('#nbio'),n=(t.artist||'').split(/,|&/)[0].trim();
@@ -563,6 +602,21 @@ async function shareTrack(){
  catch(e){dlg(`<h3>Compartir</h3><input type="text" readonly value="${esc(text+' '+url)}" onfocus="this.select()"><button class="btn g" data-close>Cerrar</button>`)}
 }
 $('#nq').onclick=qDlg;$('#nsl').onclick=sleepDlg;$('#nsr').onclick=shareTrack;
+/* ---------- fotos de artistas ---------- */
+const aimg=store.get('aimg',{});
+async function artImg(n){
+ const k=n.toLowerCase();
+ if(aimg[k]!==undefined)return aimg[k];
+ try{
+  const d=await jsonp('https://api.deezer.com/search/artist?limit=5&output=jsonp&q='+encodeURIComponent(n));
+  const a=(d.data||[]).find(x=>{const m=(x.name||'').toLowerCase();return m&&(m===k||m.includes(k)||k.includes(m))});
+  aimg[k]=a?(a.picture_big||a.picture_medium||''):'';store.set('aimg',aimg);return aimg[k];
+ }catch(e){return ''}
+}
+function fillArtists(){
+ $$('.cov.art[data-an]:not([data-d])').forEach(el=>{el.dataset.d=1;artImg(el.dataset.an).then(u=>{if(u){el.style.background=`center/cover url("${u}")`;el.textContent=''}})});
+}
+$('#pl2').onclick=$('#npl').onclick=()=>{if(cur){pend=cur;addDlg()}};
 syncSR();setPP(false);loadYT();home();
 </script>
 </body>
