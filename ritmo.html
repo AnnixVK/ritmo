@@ -8,6 +8,7 @@
 :root{--bg:#0e0e12;--panel:#17171d;--p2:#202029;--line:#2a2a35;--text:#f4f3f8;--mut:#9b99a9;--acc:#a238ff;--acc2:#ff3d81;--side:#0a0a0d;--np1:#2c1850;--c2:#ffffff0f;--ppc:#111;--rail:#3a3a48;--thumb:#fff;--hi:#202029;--btn:var(--acc);--btnc:#fff;--pb:transparent;color-scheme:dark}
 :root[data-theme=radio]{--bg:#e9eff6;--panel:#fff;--p2:#fff;--line:#cfdbe8;--text:#10294a;--mut:#6b7f95;--acc:#ff5a4a;--acc2:#ff5a4a;--side:#fff;--np1:#c9d9ea;--c2:#10294a0d;--ppc:#fff;--rail:#c3d1e0;--thumb:#10294a;--hi:#d9e4ef;--btn:#10294a;--pb:#cfdbe8;color-scheme:light}
 :root[data-theme=medianoche]{--bg:#0a1829;--panel:#10294a;--p2:#173761;--line:#24456f;--text:#eaf1fa;--mut:#8ea6c2;--acc:#ff5a4a;--acc2:#ff5a4a;--side:#071322;--np1:#16345c;--ppc:#0a1829;--rail:#2c4c78;--hi:#173761}
+:root[data-theme=bosque]{--bg:#0c1512;--panel:#13211c;--p2:#1b2e27;--line:#25392f;--text:#eaf5ef;--mut:#88a496;--acc:#3ddc97;--acc2:#a3e635;--side:#08100d;--np1:#12382b;--ppc:#0c1512;--rail:#2b4237;--hi:#1b2e27;--btnc:#06130d}
 *{box-sizing:border-box;margin:0;-webkit-tap-highlight-color:transparent}
 html,body{height:100%;background:var(--bg);color:var(--text);font:15px/1.4 "Segoe UI",system-ui,-apple-system,Roboto,sans-serif}
 button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
@@ -151,6 +152,9 @@ dialog .ql{max-height:50vh;overflow:auto;margin:8px 0}
 .pills{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:12px}
 .pills .pill{padding:7px 13px;font-size:13px}
 .eqr input{width:100%;min-width:0}
+.gd{padding-left:20px;margin:10px 0;color:var(--mut);font-size:14px;line-height:1.55}
+.gd li{margin:9px 0}
+.gd b{color:var(--text)}
 .st{padding:14px 0;border-top:1px solid var(--line)}
 dialog h3+.st{border-top:0;padding-top:4px}
 .st h4{font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--acc);margin-bottom:8px}
@@ -277,7 +281,7 @@ function home(){
  (art.length?`<div class="sec">Tus artistas</div><div class="hs">${art.map(aCard).join('')}</div>`:'')+
  '<div id="hnov"></div><div id="htop"></div>'+
  (rec.length||art.length?'':'<div class="banner"><b>Aquí irá tu música.</b><br>Cuando escuches canciones y marques favoritos, verás tus recientes, tus artistas y las novedades de ellos.</div>')+
- (key?'':'<div class="banner"><b>Ahora suenan previews de 30 s.</b><br>Para oír las canciones enteras, añade tu API key de YouTube en Ajustes.</div>'));
+ (key?'':'<div class="banner"><b>Ahora suenan previews de 30 s.</b><br>Para oír las canciones enteras, añade tu API key de YouTube en Ajustes.<br><button class="pill" data-guide style="margin-top:10px">Cómo conseguir la clave</button></div>'));
  loadNov(art);loadTop();
 }
 async function loadNov(art){
@@ -342,12 +346,26 @@ function openPl(x){
  push(); const f=x==='fav', l=f?{name:'Favoritos',tracks:fav}:lists[x];
  view(back()+`<div class="hero">${l.tracks.length?`<img class="cov" src="${esc(l.tracks[l.tracks.length-1].art)}" alt="">`:`<div class="cov ${f?'fav':'pl'}">${f?IC.heart:esc((l.name[0]||'♪').toUpperCase())}</div>`}<div><h1>${esc(l.name)}</h1><p class="sub">${l.tracks.length} canciones</p><button class="btn" data-playall>Reproducir</button>${f?'':`<button class="btn g" data-delpl="${x}">Borrar</button>`}</div></div>`+(l.tracks.length?rows(l.tracks):'<p class="banner">Aún no hay canciones. Pulsa + en cualquier canción para añadirla.</p>'));
 }
+function guide(){
+ dlg(`<h3>Cómo conseguir tu clave de YouTube</h3>
+ <p>Es gratis, no pide tarjeta y se hace una sola vez (unos 5 minutos).</p>
+ <ol class="gd">
+  <li><b>Entra en Google Cloud</b> con tu cuenta de Google: <a href="https://console.cloud.google.com" target="_blank" rel="noopener">console.cloud.google.com</a>. Si te pide aceptar los términos, acepta.</li>
+  <li><b>Elige un proyecto.</b> Normalmente ya hay uno llamado «My First Project». Si no, pulsa el selector de proyectos (arriba) y crea uno nuevo con el nombre que quieras.</li>
+  <li><b>Activa la API de YouTube:</b> abre <a href="https://console.cloud.google.com/apis/library/youtube.googleapis.com" target="_blank" rel="noopener">este enlace</a> y pulsa el botón azul <b>Habilitar</b>. Si pone «Administrar», ya estaba activada.</li>
+  <li><b>Crea la clave:</b> en esa misma página pulsa <b>Crear credenciales</b>. Deja «YouTube Data API v3», marca <b>Datos públicos</b> y pulsa <b>Siguiente</b>.</li>
+  <li><b>Copia la clave</b> que aparece (empieza por <b>AIza</b>) con el icono de copiar y pulsa <b>Listo</b>.</li>
+  <li><b>Pégala en Sono:</b> Ajustes → Canciones completas → pega la clave → <b>Guardar clave</b>.</li>
+ </ol>
+ <p><b>Importante:</b> no compartas tu clave. Cada persona debería crear la suya, así cada una tiene sus propias canciones al día (unas 100 nuevas). Si la pierdes, la encuentras en <a href="https://console.cloud.google.com/apis/credentials" target="_blank" rel="noopener">Credenciales</a>.</p>
+ <button class="btn" data-setback>Volver a Ajustes</button><button class="btn g" data-close>Cerrar</button>`);
+}
 function settings(){
  const th=document.documentElement.dataset.theme;
  dlg(`<h3>Ajustes</h3>
- <div class="st"><h4>Apariencia</h4><div class="pills" style="margin:0">${[['violeta','Violeta'],['radio','Radio'],['medianoche','Medianoche']].map(([k,n])=>`<button class="pill ${th===k?'on':''}" data-tm="${k}">${n}</button>`).join('')}</div></div>
- <div class="st"><h4>Canciones completas</h4><p>Para oír las canciones enteras hace falta una API key gratuita de YouTube. Se guarda solo en este dispositivo.</p><input type="password" id="kin" placeholder="Pega aquí tu API key (AIza…)" value="${esc(key)}"><p>Créala en <a href="https://console.cloud.google.com/apis/library/youtube.googleapis.com" target="_blank" rel="noopener">Google Cloud</a>: activa «YouTube Data API v3» y crea una clave de API.</p><button class="btn" data-savekey>Guardar clave</button></div>
- <div class="st"><h4>Acerca de Sono</h4><p>Creada por <b>AnnixVK</b> y <b>Claude</b> (Anthropic). Hecha con cariño, paso a paso.</p><p>Datos de iTunes, YouTube, Deezer, Audius, LRCLIB y Wikipedia.</p><p>Versión 1.0</p></div>
+ <div class="st"><h4>Apariencia</h4><div class="pills" style="margin:0">${[['violeta','Violeta'],['radio','Radio'],['medianoche','Medianoche'],['bosque','Bosque']].map(([k,n])=>`<button class="pill ${th===k?'on':''}" data-tm="${k}">${n}</button>`).join('')}</div></div>
+ <div class="st"><h4>Canciones completas</h4><p>Para oír las canciones enteras hace falta una API key gratuita de YouTube. Se guarda solo en este dispositivo.</p><input type="password" id="kin" placeholder="Pega aquí tu API key (AIza…)" value="${esc(key)}"><p>Créala en <a href="https://console.cloud.google.com/apis/library/youtube.googleapis.com" target="_blank" rel="noopener">Google Cloud</a>: activa «YouTube Data API v3» y crea una clave de API.</p><button class="btn" data-savekey>Guardar clave</button><button class="btn g" data-guide>Guía paso a paso</button></div>
+ <div class="st"><h4>Acerca de Sono</h4><p>Creada por <b>Anna</b> y <b>Claude</b> (Anthropic). Hecha con cariño, paso a paso.</p><p>Datos de iTunes, YouTube, Deezer, Audius, LRCLIB y Wikipedia.</p><p>Versión 1.1</p></div>
  <button class="btn g" data-close>Cerrar</button>`);
 }
 function dlg(h){const d=$('#dlg');d.innerHTML=h;if(!d.open)d.showModal()}
@@ -459,6 +477,8 @@ document.addEventListener('click',e=>{
  if(el=g('[data-lt]'))return lib(el.dataset.lt);
  if(el=g('[data-tm]')){applyTheme(el.dataset.tm);$$('[data-tm]').forEach(b=>b.classList.toggle('on',b===el));return}
  if(el=g('[data-addloc]'))return $('#lf').click();
+ if(el=g('[data-guide]'))return guide();
+ if(el=g('[data-setback]'))return settings();
  if(el=g('[data-pre]')){gains=PRES[el.dataset.pre].slice();applyEQ();return eqDlg()}
  if(el=g('[data-rmloc]')){const t=pend;loc=loc.filter(x=>x.id!==t.id);store.set('loc',loc);fav=fav.filter(x=>x.id!==t.id);lists.forEach(l=>l.tracks=l.tracks.filter(x=>x.id!==t.id));save();idbDel(t.id).catch(()=>{});$('#dlg').close();toast('Quitada de Sono');if($('#view [data-lt]'))lib();return}
  if(el=g('[data-off]')){const t=cur;if(!t)return;lyoff[t.id]=Math.round(((lyoff[t.id]||0)+ +el.dataset.off)*10)/10;lyIdx=-2;const o=lyoff[t.id];return toast(o===0?'Letra sin ajuste':'Letra '+(o>0?'más pronto':'más tarde')+' '+Math.abs(o).toString().replace('.',',')+' s')}
@@ -651,7 +671,7 @@ function fillArtists(){
 $('#pl2').onclick=$('#npl').onclick=()=>{if(cur){pend=cur;addDlg()}};
 /* ---------- temas ---------- */
 const applyTheme=t=>{document.documentElement.dataset.theme=t;store.set('theme',t)};
-{const th=store.get('theme','violeta');applyTheme(th==='bosque'?'medianoche':th)}
+applyTheme(store.get('theme','violeta'));
 
 /* ---------- música del dispositivo ---------- */
 let loc=store.get('loc',[]),lurl='';
