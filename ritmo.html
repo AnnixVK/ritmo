@@ -126,6 +126,14 @@ a.pill{text-decoration:none}
 .c2 b{display:block;margin-bottom:6px}
 .c2 p{margin:4px 0;color:var(--mut);font-size:14px}
 #nlyr{white-space:pre-wrap;font:inherit;line-height:1.7;margin:0}
+.tabs[hidden]{display:none}
+.acts{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+.pill.act{background:var(--acc);color:#fff}
+dialog .ql{max-height:50vh;overflow:auto;margin:8px 0}
+.qi{display:flex;align-items:center;gap:10px;padding:6px;border-radius:10px;cursor:pointer}
+.qi.now{background:var(--p2)}.qi.now b{color:var(--acc)}
+.qi img{width:40px;height:40px;border-radius:6px;object-fit:cover;background:var(--p2)}
+.qi .m{flex:1}
 @media(max-width:760px){
 #app{grid-template-columns:1fr;grid-template-rows:1fr auto auto}
 aside{grid-row:3;grid-column:1;flex-direction:row;padding:6px 8px calc(6px + env(safe-area-inset-bottom));justify-content:space-around;border-top:1px solid var(--line)}
@@ -178,6 +186,7 @@ main{grid-column:1;padding:0 14px 20px}
  <div class="bar"><span id="ntc">0:00</span><input type="range" id="nseek" min="0" max="1000" value="0"><span id="ntd">0:00</span></div>
  <div class="btns"><button class="ic sr" id="nsh" aria-label="Aleatorio"><svg viewBox="0 0 24 24"><path d="M3 6h3.5c3 0 4.5 2 6 6s3 6 6 6H21M3 18h3.5c1.6 0 2.8-.6 3.8-1.7M13.7 7.7C14.7 6.6 16 6 17.5 6H21M18 3l3 3-3 3M18 15l3 3-3 3"/></svg></button><button class="ic" id="npv" aria-label="Anterior"><svg viewBox="0 0 24 24"><path d="M6 6h2v12H6zM9.5 12l8.5 6V6z"/></svg></button><button id="npp" aria-label="Reproducir"></button><button class="ic" id="nnx" aria-label="Siguiente"><svg viewBox="0 0 24 24"><path d="M16 6h2v12h-2zM6 18l8.5-6L6 6z"/></svg></button><button class="ic sr" id="nrp" data-r="0" aria-label="Repetir"><svg viewBox="0 0 24 24"><path d="M17 2l4 4-4 4M3 11V9a3 3 0 0 1 3-3h15M7 22l-4-4 4-4M21 13v2a3 3 0 0 1-3 3H3"/></svg></button></div>
  <div class="npv"><svg viewBox="0 0 24 24"><path d="M3 9v6h4l5 4V5L7 9z"/><path d="M16 8.5a5 5 0 0 1 0 7" fill="none" stroke="currentColor" stroke-width="2"/></svg><input type="range" id="nvol" min="0" max="100" value="80" aria-label="Volumen"></div>
+ <div class="acts"><button class="pill" id="nq">Cola</button><button class="pill" id="nsl">Dormir</button><button class="pill" id="nsr">Compartir</button></div>
  <div class="c2" id="nin"></div>
  <div class="c2" id="nbio" hidden></div>
  <div class="c2"><b>Letra</b><pre id="nlyr"></pre><p>Letras: LRCLIB (comunidad)</p></div>
@@ -209,8 +218,8 @@ let shown=[], queue=[], qi=-1, cur=null, mode='', tab='songs', term='', stack=[]
 const audio=new Audio(); audio.volume=.8;
 
 /* ---------- datos ---------- */
-const mapIt=r=>({id:'i'+r.trackId,title:r.trackName,artist:r.artistName,album:r.collectionName,art:(r.artworkUrl100||'').replace('100x100','400x400'),dur:(r.trackTimeMillis||30000)/1000,preview:r.previewUrl,src:'it',artistId:r.artistId,genre:r.primaryGenreName,year:(r.releaseDate||'').slice(0,4)});
-const mapAu=r=>({id:'a'+r.id,title:r.title,artist:r.user?.name||'',album:'Audius',art:r.artwork?.['480x480']||r.artwork?.['150x150']||'',dur:r.duration,src:'au',stream:`https://api.audius.co/v1/tracks/${r.id}/stream?app_name=ritmo`});
+const mapIt=r=>({id:'i'+r.trackId,title:r.trackName,artist:r.artistName,album:r.collectionName,art:(r.artworkUrl100||'').replace('100x100','400x400'),dur:(r.trackTimeMillis||30000)/1000,preview:r.previewUrl,src:'it',url:r.trackViewUrl,artistId:r.artistId,genre:r.primaryGenreName,year:(r.releaseDate||'').slice(0,4)});
+const mapAu=r=>({id:'a'+r.id,title:r.title,artist:r.user?.name||'',album:'Audius',art:r.artwork?.['480x480']||r.artwork?.['150x150']||'',dur:r.duration,src:'au',url:r.permalink?'https://audius.co'+r.permalink:'',stream:`https://api.audius.co/v1/tracks/${r.id}/stream?app_name=ritmo`});
 const isFav=t=>fav.some(f=>f.id===t.id);
 const save=()=>{store.set('fav',fav);store.set('lists',lists)};
 
@@ -349,6 +358,7 @@ async function playCur(){
 }
 const play=(l,i)=>{queue=l.slice();qi=i;playCur()};
 const next=auto=>{
+ if(auto===true&&sleepEnd){sleepEnd=false;$('#nsl').classList.remove('act');stopAll();setPP(false);toast('Temporizador: música parada. Buenas noches');return}
  if(auto===true&&repeat===2){playCur();return}
  if(shuffle&&queue.length>1){hist.push(qi);if(hist.length>50)hist.shift();let n;do{n=Math.floor(Math.random()*queue.length)}while(n===qi);qi=n;return playCur()}
  if(qi<queue.length-1){qi++;playCur()}
@@ -379,6 +389,7 @@ setInterval(()=>{
  if(!seeking){const p=d?c/d*1000:0;$('#seek').value=p;$('#seek').style.setProperty('--p',p/10+'%')}
  $('#tc').textContent=fmt(c);$('#td').textContent=fmt(d);
  if(npOpen)npTick(c,d);
+ if(sleepAt&&Date.now()>=sleepAt){sleepAt=0;pauseAll();$('#nsl').classList.remove('act');toast('Temporizador: música en pausa. Buenas noches')}
 },400);
 
 /* ---------- eventos ---------- */
@@ -401,12 +412,17 @@ document.addEventListener('click',e=>{
  if(el=g('[data-pl]'))return openPl(el.dataset.pl);
  if(el=g('[data-back]')){const p=stack.pop();shown=p.s;view(p.h);return}
  if(el=g('[data-playall]')){if(shown.length)play(shown,0);return}
+ if(el=g('[data-qnext],[data-qend]')){const nx=el.hasAttribute('data-qnext');$('#dlg').close();if(!cur||qi<0||!queue.length){play([pend],0);return}if(nx)queue.splice(qi+1,0,pend);else queue.push(pend);hist=[];return toast(nx?'Sonará a continuación':'Añadida a la cola')}
+ if(el=g('[data-qu]')){const i=+el.dataset.qu;if(i>0){[queue[i-1],queue[i]]=[queue[i],queue[i-1]];if(qi===i)qi--;else if(qi===i-1)qi++;hist=[];qDlg()}return}
+ if(el=g('[data-qx]')){const i=+el.dataset.qx;if(i===qi)return toast('Esa es la que suena');queue.splice(i,1);if(i<qi)qi--;hist=[];return qDlg()}
+ if(el=g('[data-qj]')){qi=+el.dataset.qj;$('#dlg').close();return playCur()}
+ if(el=g('[data-sl]')){const v=el.dataset.sl;sleepAt=0;sleepEnd=false;if(v==='end')sleepEnd=true;else if(+v>0)sleepAt=Date.now()+v*60000;$('#nsl').classList.toggle('act',!!(sleepAt||sleepEnd));$('#dlg').close();return toast(v==='0'?'Temporizador desactivado':v==='end'?'Pararé al acabar esta canción':'Pararé en '+v+' min')}
  if(el=g('[data-rc]')){return play(store.get('rec',[]),+el.dataset.rc)}
  if(el=g('[data-nav]')){const n=el.dataset.nav;if(n!=='set')setNav(n);return n==='lib'?lib():n==='set'?settings():n==='home'?home():($('#q').value?search($('#q').value):explore())}
  if(el=g('.row'))return play(shown,+el.dataset.i);
 });
 function addDlg(){
- dlg(`<h3>Añadir a playlist</h3>${lists.map((l,i)=>`<button class="li" data-addpl="${i}">${esc(l.name)} <span class="sub">· ${l.tracks.length}</span></button>`).join('')}<button class="li" data-newpl>+ Nueva playlist</button><button class="btn g" data-close>Cerrar</button>`);
+ dlg(`<h3>Añadir</h3><button class="li" data-qnext>Reproducir a continuación</button><button class="li" data-qend>Añadir a la cola</button><p>Playlists</p>${lists.map((l,i)=>`<button class="li" data-addpl="${i}">${esc(l.name)} <span class="sub">· ${l.tracks.length}</span></button>`).join('')}<button class="li" data-newpl>+ Nueva playlist</button><button class="btn g" data-close>Cerrar</button>`);
 }
 let deb;$('#q').addEventListener('input',e=>{clearTimeout(deb);deb=setTimeout(()=>search(e.target.value),450)});
 $('#q').addEventListener('keydown',e=>{if(e.key==='Enter'){clearTimeout(deb);search(e.target.value);e.target.blur()}});
@@ -530,6 +546,23 @@ ns.addEventListener('change',()=>{seek(ns.value/1000*pos().d);nsk=false});
 const nv=$('#nvol');
 nv.addEventListener('input',()=>{vl.value=nv.value;vl.dispatchEvent(new Event('input'));nv.style.setProperty('--p',nv.value+'%')});
 $('#np').addEventListener('scroll',layoutNP);addEventListener('resize',layoutNP);
+/* ---------- cola, temporizador y compartir ---------- */
+let sleepAt=0,sleepEnd=false;
+function pauseAll(){try{if(mode==='yt'&&yt&&yt.pauseVideo)yt.pauseVideo()}catch(e){}audio.pause()}
+function qDlg(){
+ if(!queue.length)return toast('La cola está vacía');
+ dlg(`<h3>Cola · ${queue.length}</h3><div class="ql">${queue.map((t,i)=>`<div class="qi ${i===qi?'now':''}" data-qj="${i}"><img src="${esc(t.art)}" alt=""><div class="m"><b>${esc(t.title)}</b><span>${esc(t.artist)}</span></div><button class="ic" data-qu="${i}" aria-label="Subir"><svg viewBox="0 0 24 24"><path d="M6 15l6-6 6 6"/></svg></button><button class="ic" data-qx="${i}" aria-label="Quitar">✕</button></div>`).join('')}</div><button class="btn g" data-close>Cerrar</button>`);
+ const c=$('#dlg .qi.now');if(c)c.scrollIntoView({block:'center'});
+}
+function sleepDlg(){dlg(`<h3>Temporizador para dormir</h3>${[15,30,45,60].map(m=>`<button class="li" data-sl="${m}">${m} minutos</button>`).join('')}<button class="li" data-sl="end">Al terminar esta canción</button><button class="li" data-sl="0">Desactivar</button><button class="btn g" data-close>Cerrar</button>`)}
+async function shareTrack(){
+ const t=cur;if(!t)return;
+ const url=ytc[t.id]?'https://youtu.be/'+ytc[t.id]:(t.url||'https://www.google.com/search?q='+encodeURIComponent(t.title+' '+t.artist)),text=t.title+' — '+t.artist;
+ try{if(navigator.share){await navigator.share({title:t.title,text,url});return}}catch(e){if(e.name==='AbortError')return}
+ try{await navigator.clipboard.writeText(text+'\n'+url);toast('Enlace copiado')}
+ catch(e){dlg(`<h3>Compartir</h3><input type="text" readonly value="${esc(text+' '+url)}" onfocus="this.select()"><button class="btn g" data-close>Cerrar</button>`)}
+}
+$('#nq').onclick=qDlg;$('#nsl').onclick=sleepDlg;$('#nsr').onclick=shareTrack;
 syncSR();setPP(false);loadYT();home();
 </script>
 </body>
