@@ -5,20 +5,22 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Sono</title>
 <style>
-:root{--bg:#0e0e12;--panel:#17171d;--p2:#202029;--line:#2a2a35;--text:#f4f3f8;--mut:#9b99a9;--acc:#a238ff;--acc2:#ff3d81;color-scheme:dark}
+:root{--bg:#0e0e12;--panel:#17171d;--p2:#202029;--line:#2a2a35;--text:#f4f3f8;--mut:#9b99a9;--acc:#a238ff;--acc2:#ff3d81;--side:#0a0a0d;--np1:#2c1850;--c2:#ffffff0f;--ppc:#111;--rail:#3a3a48;--thumb:#fff;--hi:#202029;--btn:var(--acc);--btnc:#fff;--pb:transparent;color-scheme:dark}
+:root[data-theme=radio]{--bg:#e9eff6;--panel:#fff;--p2:#fff;--line:#cfdbe8;--text:#10294a;--mut:#6b7f95;--acc:#ff5a4a;--acc2:#ff5a4a;--side:#fff;--np1:#c9d9ea;--c2:#10294a0d;--ppc:#fff;--rail:#c3d1e0;--thumb:#10294a;--hi:#d9e4ef;--btn:#10294a;--pb:#cfdbe8;color-scheme:light}
+:root[data-theme=bosque]{--bg:#0c1512;--panel:#13211c;--p2:#1b2e27;--line:#25392f;--text:#eaf5ef;--mut:#88a496;--acc:#3ddc97;--acc2:#a3e635;--side:#08100d;--np1:#12382b;--ppc:#0c1512;--rail:#2b4237;--hi:#1b2e27;--btnc:#06130d}
 *{box-sizing:border-box;margin:0;-webkit-tap-highlight-color:transparent}
 html,body{height:100%;background:var(--bg);color:var(--text);font:15px/1.4 "Segoe UI",system-ui,-apple-system,Roboto,sans-serif}
 button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
 button:focus-visible,input:focus-visible{outline:2px solid var(--acc);outline-offset:2px}
 svg{width:1em;height:1em;fill:currentColor;flex:none}
 #app{display:grid;grid-template-columns:220px 1fr;grid-template-rows:1fr auto;height:100dvh}
-aside{grid-row:1;padding:20px 12px;background:#0a0a0d;display:flex;flex-direction:column;gap:4px}
+aside{grid-row:1;padding:20px 12px;background:var(--side);display:flex;flex-direction:column;gap:4px}
 .logo{display:flex;align-items:center;gap:10px;font-size:22px;font-weight:800;letter-spacing:-.5px;padding:0 10px 18px}
 .logo i{width:30px;height:30px;border-radius:9px;background:linear-gradient(135deg,var(--acc),var(--acc2));display:grid;place-items:center}
 .logo svg{font-size:16px;color:#fff}
 .nav{display:flex;align-items:center;gap:12px;padding:11px 12px;border-radius:10px;color:var(--mut);font-weight:600;text-align:left}
 .nav svg{font-size:20px}
-.nav:hover{color:var(--text)}.nav.on{color:var(--text);background:var(--p2)}
+.nav:hover{color:var(--text)}.nav.on{color:var(--text);background:var(--hi)}
 main{grid-row:1;grid-column:2;overflow:auto;padding:0 28px 28px}
 .top{position:sticky;top:0;z-index:5;background:linear-gradient(var(--bg) 75%,transparent);padding:18px 0 14px}
 .sb{display:flex;gap:10px;align-items:center;background:var(--p2);border-radius:999px;padding:0 16px;height:46px;border:1px solid var(--line);max-width:560px}
@@ -26,8 +28,8 @@ main{grid-row:1;grid-column:2;overflow:auto;padding:0 28px 28px}
 .sb input{flex:1;min-width:0;background:none;border:0;color:var(--text);font:inherit;outline:0}
 .sb svg{color:var(--mut);font-size:18px}
 .tabs{display:flex;gap:8px;margin-top:12px;overflow-x:auto;scrollbar-width:none}
-.pill{padding:7px 16px;border-radius:999px;background:var(--p2);color:var(--text);font-weight:600;font-size:14px;white-space:nowrap;border:1px solid transparent}
-.pill.on{background:var(--text);color:#111}
+.pill{padding:7px 16px;border-radius:999px;background:var(--p2);color:var(--text);font-weight:600;font-size:14px;white-space:nowrap;border:1px solid var(--pb)}
+.pill.on{background:var(--text);color:var(--ppc)}
 h2{font-size:24px;letter-spacing:-.4px;margin:18px 0 12px}
 .sub{color:var(--mut)}
 .chips{display:flex;flex-wrap:wrap;gap:10px;margin-top:6px}
@@ -36,7 +38,7 @@ h2{font-size:24px;letter-spacing:-.4px;margin:18px 0 12px}
 .banner{margin-top:18px;padding:14px 16px;border-radius:14px;background:var(--panel);border:1px solid var(--line);color:var(--mut);max-width:560px}
 .banner b{color:var(--text)}
 .row{display:grid;grid-template-columns:48px 1fr minmax(0,.7fr) 34px 34px 44px;gap:12px;align-items:center;padding:7px 10px;border-radius:10px;cursor:pointer}
-.row:hover{background:var(--panel)}.row.now{background:var(--p2)}.row.now b{color:var(--acc)}
+.row:hover{background:var(--panel)}.row.now{background:var(--hi)}.row.now b{color:var(--acc)}
 .row img{width:48px;height:48px;border-radius:6px;background:var(--p2);object-fit:cover}
 .m{min-width:0;display:flex;flex-direction:column}
 .m b,.m span,.al{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
@@ -59,21 +61,21 @@ h2{font-size:24px;letter-spacing:-.4px;margin:18px 0 12px}
 .hero{display:flex;gap:20px;align-items:flex-end;margin:12px 0 18px;flex-wrap:wrap}
 .hero .cov{width:170px;margin:0;flex:none}
 .hero h1{font-size:34px;letter-spacing:-.8px;line-height:1.1}
-.btn{padding:11px 26px;border-radius:999px;background:var(--acc);color:#fff;font-weight:700;margin-top:12px;margin-right:8px}
-.btn.g{background:var(--p2)}
+.btn{padding:11px 26px;border-radius:999px;background:var(--btn);color:var(--btnc);font-weight:700;margin-top:12px;margin-right:8px}
+.btn.g{background:var(--p2);color:var(--text)}
 .sec{margin:26px 0 10px;font-size:19px;font-weight:700}
-#player{grid-column:1/-1;grid-row:2;display:grid;grid-template-columns:1fr minmax(280px,1.4fr) 1fr;align-items:center;gap:16px;padding:10px 18px;background:#0a0a0d;border-top:1px solid var(--line);min-height:84px}
+#player{grid-column:1/-1;grid-row:2;display:grid;grid-template-columns:1fr minmax(280px,1.4fr) 1fr;align-items:center;gap:16px;padding:10px 18px;background:var(--side);border-top:1px solid var(--line);min-height:84px}
 .pi{display:flex;align-items:center;gap:12px;min-width:0}
 .pi img{width:56px;height:56px;border-radius:8px;background:var(--p2);object-fit:cover}
 .pi .m b{font-size:14px}
 .pc{display:flex;flex-direction:column;align-items:center;gap:4px}
 .btns{display:flex;align-items:center;gap:10px}
 .btns .ic{font-size:22px;color:var(--text)}
-#pp{width:44px;height:44px;border-radius:50%;background:var(--text);color:#111;font-size:22px;display:grid;place-items:center}
+#pp{width:44px;height:44px;border-radius:50%;background:var(--text);color:var(--ppc);font-size:22px;display:grid;place-items:center}
 .bar{display:flex;align-items:center;gap:10px;width:100%;font-size:12px;color:var(--mut)}
-input[type=range]{-webkit-appearance:none;appearance:none;flex:1;height:4px;border-radius:4px;background:linear-gradient(90deg,var(--acc) var(--p,0%),#3a3a48 var(--p,0%));outline:0}
-input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:12px;height:12px;border-radius:50%;background:#fff}
-input[type=range]::-moz-range-thumb{width:12px;height:12px;border:0;border-radius:50%;background:#fff}
+input[type=range]{-webkit-appearance:none;appearance:none;flex:1;height:4px;border-radius:4px;background:linear-gradient(90deg,var(--acc) var(--p,0%),var(--rail) var(--p,0%));outline:0}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:12px;height:12px;border-radius:50%;background:var(--thumb)}
+input[type=range]::-moz-range-thumb{width:12px;height:12px;border:0;border-radius:50%;background:var(--thumb)}
 .pr{display:flex;align-items:center;justify-content:flex-end;gap:10px}
 #mode{font-size:12px;padding:4px 10px;border-radius:999px;background:var(--p2);color:var(--mut);white-space:nowrap}
 #mode.full{color:#fff;background:linear-gradient(135deg,var(--acc),var(--acc2))}
@@ -89,7 +91,7 @@ dialog .li{display:block;width:100%;text-align:left;padding:11px 12px;border-rad
 dialog .li:hover{background:var(--p2)}
 dialog p{color:var(--mut);font-size:13px;margin:6px 0}
 dialog a{color:var(--acc)}
-#toast{position:fixed;left:50%;bottom:110px;transform:translateX(-50%);background:var(--text);color:#111;padding:10px 18px;border-radius:999px;font-weight:600;z-index:30;max-width:90vw;opacity:0;pointer-events:none;transition:opacity .2s}
+#toast{position:fixed;left:50%;bottom:110px;transform:translateX(-50%);background:var(--text);color:var(--ppc);padding:10px 18px;border-radius:999px;font-weight:600;z-index:30;max-width:90vw;opacity:0;pointer-events:none;transition:opacity .2s}
 #toast.s{opacity:1}
 .ic{position:relative}
 .btns .ic.sr{color:var(--mut)}
@@ -102,7 +104,7 @@ dialog a{color:var(--acc)}
 #ytsz svg{width:13px;height:13px;fill:none;stroke:#fff;stroke-width:2;stroke-linecap:round}
 #ytbox.big{width:min(88vw,440px)}
 #pa{cursor:pointer}
-#np{position:fixed;inset:0;z-index:15;background:linear-gradient(180deg,#2c1850 0%,var(--bg) 60%);display:flex;flex-direction:column;align-items:center;gap:14px;padding:calc(10px + env(safe-area-inset-top,0px)) 20px calc(16px + env(safe-area-inset-bottom,0px));overflow:auto}
+#np{position:fixed;inset:0;z-index:15;background:linear-gradient(180deg,var(--np1) 0%,var(--bg) 60%);display:flex;flex-direction:column;align-items:center;gap:14px;padding:calc(10px + env(safe-area-inset-top,0px)) 20px calc(16px + env(safe-area-inset-bottom,0px));overflow:auto}
 #np[hidden]{display:none}
 #np>*{width:min(100%,520px);flex:none}
 .nph{display:flex;align-items:center;justify-content:space-between}
@@ -115,23 +117,23 @@ a.pill{text-decoration:none}
 .npi .m{flex:1}.npi .m b{font-size:20px}
 #np .btns{justify-content:space-between;gap:6px}
 #np .btns .ic{font-size:26px}
-#npp{width:64px;height:64px;border-radius:50%;background:var(--text);color:#111;font-size:30px;display:grid;place-items:center}
+#npp{width:64px;height:64px;border-radius:50%;background:var(--text);color:var(--ppc);font-size:30px;display:grid;place-items:center}
 .npv{display:flex;align-items:center;gap:12px;color:var(--mut)}
 .npv svg{font-size:22px}.npv input{flex:1}
 #ytbox.fs{border-radius:14px;box-shadow:none}
 #ytbox.fs #ytov,#ytbox.fs #ytsz,#ytbox.fs #ytx{display:none}
 .hs{display:flex;gap:14px;overflow-x:auto;padding-bottom:8px;scrollbar-width:none}
 .hs .card{width:140px;flex:none}
-.c2{background:#ffffff0f;border-radius:14px;padding:14px 16px}
+.c2{background:var(--c2);border-radius:14px;padding:14px 16px}
 .c2 b{display:block;margin-bottom:6px}
 .c2 p{margin:4px 0;color:var(--mut);font-size:14px}
 #nlyr{white-space:pre-wrap;font:inherit;line-height:1.7;margin:0}
 .tabs[hidden]{display:none}
 .acts{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
-.pill.act{background:var(--acc);color:#fff}
+.pill.act{background:var(--acc);color:var(--btnc)}
 dialog .ql{max-height:50vh;overflow:auto;margin:8px 0}
 .qi{display:flex;align-items:center;gap:10px;padding:6px;border-radius:10px;cursor:pointer}
-.qi.now{background:var(--p2)}.qi.now b{color:var(--acc)}
+.qi.now{background:var(--hi)}.qi.now b{color:var(--acc)}
 .qi img{width:40px;height:40px;border-radius:6px;object-fit:cover;background:var(--p2)}
 .qi .m{flex:1}
 .lr{display:flex;align-items:center;gap:14px;padding:8px;border-radius:12px;cursor:pointer}
@@ -148,6 +150,8 @@ dialog .ql{max-height:50vh;overflow:auto;margin:8px 0}
 #nlyr.plain .ll{color:var(--text)}
 .pills{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:12px}
 .pills .pill{padding:7px 13px;font-size:13px}
+.eqr{display:grid;grid-template-columns:96px 1fr 28px;gap:8px;align-items:center;font-size:13px;margin:6px 0}
+.eqr b{text-align:right;margin:0!important}
 @media(max-width:760px){
 #app{grid-template-columns:1fr;grid-template-rows:1fr auto auto}
 aside{grid-row:3;grid-column:1;flex-direction:row;padding:6px 8px calc(6px + env(safe-area-inset-bottom));justify-content:space-around;border-top:1px solid var(--line)}
@@ -200,7 +204,7 @@ main{grid-column:1;padding:0 14px 20px}
  <div class="bar"><span id="ntc">0:00</span><input type="range" id="nseek" min="0" max="1000" value="0"><span id="ntd">0:00</span></div>
  <div class="btns"><button class="ic sr" id="nsh" aria-label="Aleatorio"><svg viewBox="0 0 24 24"><path d="M3 6h3.5c3 0 4.5 2 6 6s3 6 6 6H21M3 18h3.5c1.6 0 2.8-.6 3.8-1.7M13.7 7.7C14.7 6.6 16 6 17.5 6H21M18 3l3 3-3 3M18 15l3 3-3 3"/></svg></button><button class="ic" id="npv" aria-label="Anterior"><svg viewBox="0 0 24 24"><path d="M6 6h2v12H6zM9.5 12l8.5 6V6z"/></svg></button><button id="npp" aria-label="Reproducir"></button><button class="ic" id="nnx" aria-label="Siguiente"><svg viewBox="0 0 24 24"><path d="M16 6h2v12h-2zM6 18l8.5-6L6 6z"/></svg></button><button class="ic sr" id="nrp" data-r="0" aria-label="Repetir"><svg viewBox="0 0 24 24"><path d="M17 2l4 4-4 4M3 11V9a3 3 0 0 1 3-3h15M7 22l-4-4 4-4M21 13v2a3 3 0 0 1-3 3H3"/></svg></button></div>
  <div class="npv"><svg viewBox="0 0 24 24"><path d="M3 9v6h4l5 4V5L7 9z"/><path d="M16 8.5a5 5 0 0 1 0 7" fill="none" stroke="currentColor" stroke-width="2"/></svg><input type="range" id="nvol" min="0" max="100" value="80" aria-label="Volumen"></div>
- <div class="acts"><button class="pill" id="nq">Cola</button><button class="pill" id="nsl">Dormir</button><button class="pill" id="nsr">Compartir</button></div>
+ <div class="acts"><button class="pill" id="nq">Cola</button><button class="pill" id="nsl">Dormir</button><button class="pill" id="nsr">Compartir</button><button class="pill" id="neq">Ecualizador</button></div>
  <div class="c2" id="nin"></div>
  <div class="c2" id="nbio" hidden></div>
  <div class="c2"><div class="lh"><b>Letra</b><span id="nlo" hidden><button class="pill" data-off="0.5">Más pronto</button> <button class="pill" data-off="-0.5">Más tarde</button></span></div><div id="nlbox"><div id="nlyr"></div></div><p>Letras: LRCLIB (comunidad)</p></div>
@@ -229,7 +233,7 @@ plus:'<svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>'};
 
 let fav=store.get('fav',[]), lists=store.get('lists',[]), key=store.get('ytkey',''), ytc=store.get('ytc',{});
 let shown=[], queue=[], qi=-1, cur=null, mode='', tab='songs', term='', stack=[], tok=0, pend=null, yt=null, ytReady=false, seeking=false, ytT=0, shuffle=store.get('shuf',false), repeat=store.get('rep',0), hist=[], ytHide=store.get('ythide',false);
-const audio=new Audio(); audio.volume=.8;
+const raud=new Audio(),laud=new Audio();let audio=raud;raud.volume=laud.volume=.8;
 
 /* ---------- datos ---------- */
 const mapIt=r=>({id:'i'+r.trackId,title:r.trackName,artist:r.artistName,album:r.collectionName,art:(r.artworkUrl100||'').replace('100x100','400x400'),dur:(r.trackTimeMillis||30000)/1000,preview:r.previewUrl,src:'it',url:r.trackViewUrl,artistId:r.artistId,genre:r.primaryGenreName,year:(r.releaseDate||'').slice(0,4)});
@@ -321,9 +325,10 @@ let libTab='lists';
 const lcov=(a,f,n)=>a?`<img class="lc" src="${esc(a)}" alt="" loading="lazy">`:`<div class="lc ${f?'fav':''}">${f?IC.heart:esc((n[0]||'♪').toUpperCase())}</div>`;
 function lib(t){
  if(t)libTab=t;$('#tabs').hidden=true;stack=[];shown=[];
- const pills=[['lists','Listas'],['fav','Favoritos'],['rec','Recientes']].map(([k,l])=>`<button class="pill ${libTab===k?'on':''}" data-lt="${k}">${l}</button>`).join('')+'<button class="pill" data-newpl>+ Crear lista</button>';
+ const pills=[['lists','Listas'],['fav','Favoritos'],['rec','Recientes'],['loc','Dispositivo']].map(([k,l])=>`<button class="pill ${libTab===k?'on':''}" data-lt="${k}">${l}</button>`).join('')+'<button class="pill" data-newpl>+ Crear lista</button>';
  let b;
- if(libTab==='fav')b=fav.length?`<button class="btn" data-playall>Reproducir</button><div style="margin-top:10px">${rows(fav)}</div>`:'<p class="banner">Aún no tienes favoritos. Pulsa el corazón en cualquier canción.</p>';
+ if(libTab==='loc')b=`<input type="file" id="lf" accept="audio/*" multiple hidden><button class="btn" data-addloc>+ Añadir canciones</button>${loc.length?'<button class="btn g" data-playall>Reproducir</button>':''}<p class="sub" style="margin:10px 0">Las canciones se guardan dentro de Sono, así que no hace falta elegirlas otra vez.</p>${loc.length?rows(loc):''}`;
+ else if(libTab==='fav')b=fav.length?`<button class="btn" data-playall>Reproducir</button><div style="margin-top:10px">${rows(fav)}</div>`:'<p class="banner">Aún no tienes favoritos. Pulsa el corazón en cualquier canción.</p>';
  else if(libTab==='rec'){const r=store.get('rec',[]);b=r.length?rows(r):'<p class="banner">Aquí verás lo último que has escuchado.</p>'}
  else b=`<div class="lr" data-pl="fav">${lcov(fav.length?fav[fav.length-1].art:'',true,'')}<div class="m"><b>Favoritos</b><span>Lista · ${fav.length} canciones</span></div></div>`+lists.map((l,i)=>`<div class="lr" data-pl="${i}">${lcov(l.tracks.length?l.tracks[l.tracks.length-1].art:'',false,l.name)}<div class="m"><b>${esc(l.name)}</b><span>Lista · ${l.tracks.length} canciones</span></div></div>`).join('');
  view(`<h2>Tu biblioteca</h2><div class="pills">${pills}</div>${b}`);
@@ -333,7 +338,7 @@ function openPl(x){
  view(back()+`<div class="hero">${l.tracks.length?`<img class="cov" src="${esc(l.tracks[l.tracks.length-1].art)}" alt="">`:`<div class="cov ${f?'fav':'pl'}">${f?IC.heart:esc((l.name[0]||'♪').toUpperCase())}</div>`}<div><h1>${esc(l.name)}</h1><p class="sub">${l.tracks.length} canciones</p><button class="btn" data-playall>Reproducir</button>${f?'':`<button class="btn g" data-delpl="${x}">Borrar</button>`}</div></div>`+(l.tracks.length?rows(l.tracks):'<p class="banner">Aún no hay canciones. Pulsa + en cualquier canción para añadirla.</p>'));
 }
 function settings(){
- dlg(`<h3>Ajustes</h3><p><b>API key de YouTube Data v3</b> (gratis). Se guarda solo en este dispositivo.</p><input type="password" id="kin" placeholder="AIza…" value="${esc(key)}"><p>Créala en <a href="https://console.cloud.google.com/apis/library/youtube.googleapis.com" target="_blank" rel="noopener">Google Cloud</a>: activa «YouTube Data API v3» y crea una clave de API.</p><button class="btn" data-savekey>Guardar</button><button class="btn g" data-close>Cerrar</button>`);
+ dlg(`<h3>Ajustes</h3><p><b>Tema</b></p><div class="pills">${[['violeta','Violeta'],['radio','Radio'],['bosque','Bosque']].map(([k,n])=>`<button class="pill ${document.documentElement.dataset.theme===k?'on':''}" data-tm="${k}">${n}</button>`).join('')}</div><p><b>API key de YouTube Data v3</b> (gratis). Se guarda solo en este dispositivo.</p><input type="password" id="kin" placeholder="AIza…" value="${esc(key)}"><p>Créala en <a href="https://console.cloud.google.com/apis/library/youtube.googleapis.com" target="_blank" rel="noopener">Google Cloud</a>: activa «YouTube Data API v3» y crea una clave de API.</p><button class="btn" data-savekey>Guardar</button><button class="btn g" data-close>Cerrar</button>`);
 }
 function dlg(h){const d=$('#dlg');d.innerHTML=h;if(!d.open)d.showModal()}
 const toast=m=>{const t=$('#toast');t.textContent=m;t.classList.add('s');clearTimeout(toast.t);toast.t=setTimeout(()=>t.classList.remove('s'),2600)};
@@ -346,8 +351,9 @@ function loadYT(){
 }
 function stopAll(){clearTimeout(ytT);audio.pause();if(yt&&yt.stopVideo)try{yt.stopVideo()}catch(e){}$('#ytbox').hidden=true}
 function setMode(m,label,full){mode=m;setTimeout(()=>{if(typeof layoutNP==='function')layoutNP()},0);const el=$('#mode');el.textContent=label;el.classList.toggle('full',!!full)}
-function playAudio(url,label,full){
- setMode('au',label,full);audio.src=url;audio.play().catch(()=>toast('Pulsa play para empezar'));
+function swapAudio(e){if(audio!==e){audio.pause();audio=e}}
+function playAudio(url,label,full,el){
+ swapAudio(el||raud);setMode('au',label,full);audio.src=url;audio.play().catch(()=>toast('Pulsa play para empezar'));
 }
 function playYT(v){
  setMode('yt','Completa · YouTube',true);$('#ytbox').hidden=false;$('#ytbox').classList.toggle('off',ytHide);fitYT();layoutNP();
@@ -373,6 +379,7 @@ async function findVideo(t){
 }
 async function playCur(){
  const t=queue[qi]; if(!t)return; cur=t; addRec(t); wantPlay=true; const my=++tok; stopAll(); bar(); markNow();
+ if(t.src==='lo')return playLocal(t,my);
  if(t.src==='au')return playAudio(t.stream,'Completa · Audius',true);
  if(key){loadYT(); const v=await findVideo(t); if(my!==tok)return; if(v&&window.YT&&YT.Player){return playYT(v)}}
  if(my===tok)playAudio(t.preview,'Preview 30 s');
@@ -405,7 +412,7 @@ function bar(){
  $('#ph').classList.toggle('on',isFav(cur));
  mediaSession();npInfo();
 }
-audio.onended=()=>next(true); audio.onerror=()=>{if(audio.src)toast('No se pudo cargar el audio')};
+for(const a of [raud,laud]){a.onended=()=>next(true);a.onerror=()=>{if(a.src&&a===audio)toast('No se pudo cargar el audio')}}
 setInterval(()=>{
  const {c,d}=pos(); setPP(isPlaying()); msPos(c,d);
  if(!seeking){const p=d?c/d*1000:0;$('#seek').value=p;$('#seek').style.setProperty('--p',p/10+'%')}
@@ -440,13 +447,17 @@ document.addEventListener('click',e=>{
  if(el=g('[data-qj]')){qi=+el.dataset.qj;$('#dlg').close();return playCur()}
  if(el=g('[data-sl]')){const v=el.dataset.sl;sleepAt=0;sleepEnd=false;if(v==='end')sleepEnd=true;else if(+v>0)sleepAt=Date.now()+v*60000;$('#nsl').classList.toggle('act',!!(sleepAt||sleepEnd));$('#dlg').close();return toast(v==='0'?'Temporizador desactivado':v==='end'?'Pararé al acabar esta canción':'Pararé en '+v+' min')}
  if(el=g('[data-lt]'))return lib(el.dataset.lt);
+ if(el=g('[data-tm]')){applyTheme(el.dataset.tm);$$('[data-tm]').forEach(b=>b.classList.toggle('on',b===el));return}
+ if(el=g('[data-addloc]'))return $('#lf').click();
+ if(el=g('[data-pre]')){gains=PRES[el.dataset.pre].slice();applyEQ();return eqDlg()}
+ if(el=g('[data-rmloc]')){const t=pend;loc=loc.filter(x=>x.id!==t.id);store.set('loc',loc);fav=fav.filter(x=>x.id!==t.id);lists.forEach(l=>l.tracks=l.tracks.filter(x=>x.id!==t.id));save();idbDel(t.id).catch(()=>{});$('#dlg').close();toast('Quitada de Sono');if($('#view [data-lt]'))lib();return}
  if(el=g('[data-off]')){const t=cur;if(!t)return;lyoff[t.id]=Math.round(((lyoff[t.id]||0)+ +el.dataset.off)*10)/10;lyIdx=-2;const o=lyoff[t.id];return toast(o===0?'Letra sin ajuste':'Letra '+(o>0?'más pronto':'más tarde')+' '+Math.abs(o).toString().replace('.',',')+' s')}
  if(el=g('[data-rc]')){return play(store.get('rec',[]),+el.dataset.rc)}
  if(el=g('[data-nav]')){const n=el.dataset.nav;if(n!=='set')setNav(n);return n==='lib'?lib():n==='set'?settings():n==='home'?home():($('#q').value?search($('#q').value):explore())}
  if(el=g('.row'))return play(shown,+el.dataset.i);
 });
 function addDlg(){
- dlg(`<h3>Añadir</h3><button class="li" data-qnext>Reproducir a continuación</button><button class="li" data-qend>Añadir a la cola</button><p>Playlists</p>${lists.map((l,i)=>`<button class="li" data-addpl="${i}">${esc(l.name)} <span class="sub">· ${l.tracks.length}</span></button>`).join('')}<button class="li" data-newpl>+ Nueva playlist</button><button class="btn g" data-close>Cerrar</button>`);
+ dlg(`<h3>Añadir</h3>${pend&&pend.src==='lo'?'<button class="li" data-rmloc>Quitar de Sono</button>':''}<button class="li" data-qnext>Reproducir a continuación</button><button class="li" data-qend>Añadir a la cola</button><p>Playlists</p>${lists.map((l,i)=>`<button class="li" data-addpl="${i}">${esc(l.name)} <span class="sub">· ${l.tracks.length}</span></button>`).join('')}<button class="li" data-newpl>+ Nueva playlist</button><button class="btn g" data-close>Cerrar</button>`);
 }
 let deb;$('#q').addEventListener('input',e=>{clearTimeout(deb);deb=setTimeout(()=>search(e.target.value),450)});
 $('#q').addEventListener('keydown',e=>{if(e.key==='Enter'){clearTimeout(deb);search(e.target.value);e.target.blur()}});
@@ -458,7 +469,7 @@ sk.addEventListener('pointerdown',()=>seeking=true);
 sk.addEventListener('input',()=>{sk.style.setProperty('--p',sk.value/10+'%');$('#tc').textContent=fmt(sk.value/1000*pos().d)});
 sk.addEventListener('change',()=>{seek(sk.value/1000*pos().d);seeking=false});
 const vl=$('#vol');
-vl.addEventListener('input',()=>{vl.style.setProperty('--p',vl.value+'%');audio.volume=vl.value/100;if(yt&&yt.setVolume)yt.setVolume(+vl.value)});
+vl.addEventListener('input',()=>{vl.style.setProperty('--p',vl.value+'%');raud.volume=laud.volume=vl.value/100;if(yt&&yt.setVolume)yt.setVolume(+vl.value)});
 vl.style.setProperty('--p','80%');
 /* ---------- ventana de vídeo movible ---------- */
 function fitYT(){
@@ -541,7 +552,7 @@ function renderLyr(){
  else{el.textContent='No he encontrado la letra de esta canción. Prueba el botón «Letra» de arriba.';$('#nlo').hidden=true}
 }
 function lySync(c){
- const t=cur,L=t&&lyc[t.id],ok=mode==='yt'||(t&&t.src==='au');
+ const t=cur,L=t&&lyc[t.id],ok=mode==='yt'||(t&&(t.src==='au'||t.src==='lo'));
  $('#nlyr').classList.toggle('plain',!ok);
  if(!ok||!L||!L.s||!L.s.length)return;
  const x=c+(lyoff[t.id]||0);let i=-1;for(let k=0;k<L.s.length;k++){if(L.s[k].t<=x)i=k;else break}
@@ -564,7 +575,7 @@ async function loadLyr(){
 }
 async function loadBio(){
  const t=cur,el=$('#nbio'),n=(t.artist||'').split(/,|&/)[0].trim();
- if(!n){el.hidden=true;return}
+ if(!n||n==='Mi dispositivo'){el.hidden=true;return}
  if(bioc[n]===undefined){
   bioc[n]='';
   try{
@@ -628,6 +639,55 @@ function fillArtists(){
  $$('.cov.art[data-an]:not([data-d])').forEach(el=>{el.dataset.d=1;artImg(el.dataset.an).then(u=>{if(u){el.style.background=`center/cover url("${u}")`;el.textContent=''}})});
 }
 $('#pl2').onclick=$('#npl').onclick=()=>{if(cur){pend=cur;addDlg()}};
+/* ---------- temas ---------- */
+const applyTheme=t=>{document.documentElement.dataset.theme=t;store.set('theme',t)};
+applyTheme(store.get('theme','violeta'));
+
+/* ---------- música del dispositivo ---------- */
+let loc=store.get('loc',[]),lurl='';
+const LART='data:image/svg+xml,'+encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#6b2fff"/><stop offset="1" stop-color="#ff3d81"/></linearGradient></defs><rect width="100" height="100" fill="url(#g)"/><path d="M40 28v34a9 9 0 1 0 6 8.4V40l18-5v18a9 9 0 1 0 6 8.4V24z" fill="#fff"/></svg>');
+const idb=()=>new Promise((res,rej)=>{const r=indexedDB.open('sono',1);r.onupgradeneeded=()=>r.result.createObjectStore('f');r.onsuccess=()=>res(r.result);r.onerror=()=>rej(r.error)});
+const idbDo=async(mode,fn)=>{const d=await idb();return new Promise((res,rej)=>{const t=d.transaction('f',mode),q=fn(t.objectStore('f'));t.oncomplete=()=>res(q&&q.result);t.onerror=()=>rej(t.error)})};
+const idbPut=(k,v)=>idbDo('readwrite',o=>o.put(v,k)),idbGet=k=>idbDo('readonly',o=>o.get(k)),idbDel=k=>idbDo('readwrite',o=>o.delete(k));
+const durOf=f=>new Promise(r=>{const a=new Audio(),u=URL.createObjectURL(f),end=v=>{URL.revokeObjectURL(u);r(v)};a.preload='metadata';a.onloadedmetadata=()=>end(a.duration||0);a.onerror=()=>end(0);setTimeout(()=>end(0),4000);a.src=u});
+async function addLocal(fs){
+ if(!fs.length)return;toast('Guardando '+fs.length+'…');let n=0;
+ for(const f of fs){try{
+  const id='l'+Date.now()+Math.random().toString(36).slice(2,6),nm=f.name.replace(/\.[^.]+$/,'').replace(/_/g,' ').trim(),pr=nm.split(' - ');
+  const d=await durOf(f);await idbPut(id,f);
+  loc.push({id,title:pr.length>1?pr.slice(1).join(' - '):nm,artist:pr.length>1?pr[0]:'Mi dispositivo',album:'Mi dispositivo',art:LART,dur:d||180,src:'lo'});n++;
+ }catch(e){}}
+ store.set('loc',loc);toast(n?'Añadidas '+n+' canciones':'No se pudo guardar');if($('#view [data-lt]'))lib('loc');
+}
+document.addEventListener('change',e=>{if(e.target.id==='lf'){addLocal([...e.target.files]);e.target.value=''}});
+async function playLocal(t,my){
+ try{
+  const f=await idbGet(t.id);if(!f)throw 0;if(my!==tok)return;
+  if(lurl)URL.revokeObjectURL(lurl);lurl=URL.createObjectURL(f);initEQ();
+  playAudio(lurl,'Archivo del dispositivo',true,laud);
+ }catch(e){toast('No encuentro ese archivo en Sono')}
+}
+
+/* ---------- ecualizador (solo archivos del dispositivo) ---------- */
+let gains=store.get('eq',[0,0,0,0,0]),ac=null,eq=[];
+const BANDS=[['Graves',60],['Medios bajos',230],['Medios',910],['Medios altos',3600],['Agudos',14000]];
+const PRES={Plano:[0,0,0,0,0],'Graves+':[6,4,0,-1,-1],Voces:[-2,0,4,3,0],'Agudos+':[-1,0,1,4,6],Rock:[5,3,-1,3,5]};
+function initEQ(){
+ const AC=window.AudioContext||window.webkitAudioContext;
+ if(!AC)return;
+ try{
+  if(!ac){
+   ac=new AC();const src=ac.createMediaElementSource(laud);
+   eq=BANDS.map(([,f],i)=>{const b=ac.createBiquadFilter();b.type=i===0?'lowshelf':i===4?'highshelf':'peaking';b.frequency.value=f;b.gain.value=gains[i];return b});
+   src.connect(eq[0]);for(let i=0;i<4;i++)eq[i].connect(eq[i+1]);eq[4].connect(ac.destination);
+  }
+  if(ac.state==='suspended')ac.resume();
+ }catch(e){ac=null}
+}
+const applyEQ=()=>{eq.forEach((b,i)=>b.gain.value=gains[i]);store.set('eq',gains)};
+function eqDlg(){dlg(`<h3>Ecualizador</h3><p>Se aplica a la música de tu dispositivo. YouTube no deja modificar su sonido.</p><div class="pills">${Object.keys(PRES).map(k=>`<button class="pill" data-pre="${k}">${k}</button>`).join('')}</div>${BANDS.map(([n],i)=>`<div class="eqr"><span>${n}</span><input type="range" min="-12" max="12" step="1" value="${gains[i]}" data-eq="${i}"><b>${gains[i]}</b></div>`).join('')}<button class="btn g" data-close>Cerrar</button>`)}
+document.addEventListener('input',e=>{const t=e.target;if(t.dataset&&t.dataset.eq!==undefined){gains[+t.dataset.eq]=+t.value;t.nextElementSibling.textContent=t.value;applyEQ()}});
+$('#neq').onclick=eqDlg;
 syncSR();setPP(false);loadYT();home();
 </script>
 </body>
