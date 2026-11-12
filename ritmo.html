@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>Ritmo</title>
+<title>Sono</title>
 <style>
 :root{--bg:#0e0e12;--panel:#17171d;--p2:#202029;--line:#2a2a35;--text:#f4f3f8;--mut:#9b99a9;--acc:#a238ff;--acc2:#ff3d81;color-scheme:dark}
 *{box-sizing:border-box;margin:0;-webkit-tap-highlight-color:transparent}
@@ -146,6 +146,8 @@ dialog .ql{max-height:50vh;overflow:auto;margin:8px 0}
 .ll{display:block;min-height:1.2em;padding:3px 0;color:var(--mut);transition:color .25s}
 .ll.on{color:var(--text);font-weight:700}
 #nlyr.plain .ll{color:var(--text)}
+.pills{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:12px}
+.pills .pill{padding:7px 13px;font-size:13px}
 @media(max-width:760px){
 #app{grid-template-columns:1fr;grid-template-rows:1fr auto auto}
 aside{grid-row:3;grid-column:1;flex-direction:row;padding:6px 8px calc(6px + env(safe-area-inset-bottom));justify-content:space-around;border-top:1px solid var(--line)}
@@ -166,7 +168,7 @@ main{grid-column:1;padding:0 14px 20px}
 <body>
 <div id="app">
  <aside>
-  <div class="logo"><i><svg viewBox="0 0 24 24"><path d="M4 10h3v10H4zM10.5 4h3v16h-3zM17 8h3v12h-3z"/></svg></i>Ritmo</div>
+  <div class="logo"><i><svg viewBox="0 0 24 24"><path d="M4 10h3v10H4zM10.5 4h3v16h-3zM17 8h3v12h-3z"/></svg></i>Sono</div>
   <button class="nav on" data-nav="home"><svg viewBox="0 0 24 24"><path d="M12 3l9 8h-2.5v9h-5v-6h-3v6h-5v-9H3z"/></svg>Inicio</button>
   <button class="nav" data-nav="search"><svg viewBox="0 0 24 24"><path d="M10.5 3a7.5 7.5 0 0 1 5.9 12.1l4.3 4.3-1.4 1.4-4.3-4.3A7.5 7.5 0 1 1 10.5 3zm0 2a5.5 5.5 0 1 0 0 11 5.5 5.5 0 0 0 0-11z"/></svg>Buscar</button>
   <button class="nav" data-nav="lib"><svg viewBox="0 0 24 24"><path d="M4 4h3v16H4zM9 4h3v16H9zM14.2 5.3l2.9-.8 3.9 14.6-2.9.8z"/></svg>Biblioteca</button>
@@ -231,7 +233,7 @@ const audio=new Audio(); audio.volume=.8;
 
 /* ---------- datos ---------- */
 const mapIt=r=>({id:'i'+r.trackId,title:r.trackName,artist:r.artistName,album:r.collectionName,art:(r.artworkUrl100||'').replace('100x100','400x400'),dur:(r.trackTimeMillis||30000)/1000,preview:r.previewUrl,src:'it',url:r.trackViewUrl,artistId:r.artistId,genre:r.primaryGenreName,year:(r.releaseDate||'').slice(0,4)});
-const mapAu=r=>({id:'a'+r.id,title:r.title,artist:r.user?.name||'',album:'Audius',art:r.artwork?.['480x480']||r.artwork?.['150x150']||'',dur:r.duration,src:'au',url:r.permalink?'https://audius.co'+r.permalink:'',stream:`https://api.audius.co/v1/tracks/${r.id}/stream?app_name=ritmo`});
+const mapAu=r=>({id:'a'+r.id,title:r.title,artist:r.user?.name||'',album:'Audius',art:r.artwork?.['480x480']||r.artwork?.['150x150']||'',dur:r.duration,src:'au',url:r.permalink?'https://audius.co'+r.permalink:'',stream:`https://api.audius.co/v1/tracks/${r.id}/stream?app_name=sono`});
 const isFav=t=>fav.some(f=>f.id===t.id);
 const save=()=>{store.set('fav',fav);store.set('lists',lists)};
 
@@ -294,7 +296,7 @@ async function search(q){
   if(tab==='songs'){const d=await j(base+'&media=music&entity=song&limit=30'); const l=d.results.filter(r=>r.previewUrl).map(mapIt); l.length?view(`<h2>Canciones</h2>${rows(l)}`):empty('Sin resultados.')}
   else if(tab==='artists'){const d=await j(base+'&entity=musicArtist&limit=20'); view(`<h2>Artistas</h2><div class="grid">${d.results.map(a=>`<div class="card" data-artist="${a.artistId}" data-name="${esc(a.artistName)}"><div class="cov art" data-an="${esc(a.artistName)}">${esc(a.artistName[0])}</div><b>${esc(a.artistName)}</b><span>${esc(a.primaryGenreName||'Artista')}</span></div>`).join('')}</div>`)}
   else if(tab==='albums'){const d=await j(base+'&entity=album&limit=24'); view(`<h2>Álbumes</h2><div class="grid">${d.results.map(a=>`<div class="card" data-album="${a.collectionId}"><img class="cov" src="${esc((a.artworkUrl100||'').replace('100x100','400x400'))}" alt="" loading="lazy"><b>${esc(a.collectionName)}</b><span>${esc(a.artistName)}</span></div>`).join('')}</div>`)}
-  else {const d=await j(`https://api.audius.co/v1/tracks/search?limit=30&app_name=ritmo&query=${e}`); const l=(d.data||[]).map(mapAu); l.length?view(`<h2>Audius · canciones completas</h2>${rows(l)}`):empty('Sin resultados en Audius.')}
+  else {const d=await j(`https://api.audius.co/v1/tracks/search?limit=30&app_name=sono&query=${e}`); const l=(d.data||[]).map(mapAu); l.length?view(`<h2>Audius · canciones completas</h2>${rows(l)}`):empty('Sin resultados en Audius.')}
  }catch(err){empty('No se pudo buscar ('+esc(err.message)+'). Revisa tu conexión e inténtalo otra vez.')}
 }
 const push=()=>stack.push({h:$('#view').innerHTML,s:shown});
@@ -324,7 +326,7 @@ function lib(t){
  if(libTab==='fav')b=fav.length?`<button class="btn" data-playall>Reproducir</button><div style="margin-top:10px">${rows(fav)}</div>`:'<p class="banner">Aún no tienes favoritos. Pulsa el corazón en cualquier canción.</p>';
  else if(libTab==='rec'){const r=store.get('rec',[]);b=r.length?rows(r):'<p class="banner">Aquí verás lo último que has escuchado.</p>'}
  else b=`<div class="lr" data-pl="fav">${lcov(fav.length?fav[fav.length-1].art:'',true,'')}<div class="m"><b>Favoritos</b><span>Lista · ${fav.length} canciones</span></div></div>`+lists.map((l,i)=>`<div class="lr" data-pl="${i}">${lcov(l.tracks.length?l.tracks[l.tracks.length-1].art:'',false,l.name)}<div class="m"><b>${esc(l.name)}</b><span>Lista · ${l.tracks.length} canciones</span></div></div>`).join('');
- view(`<h2>Tu biblioteca</h2><div class="hs" style="margin-bottom:12px">${pills}</div>${b}`);
+ view(`<h2>Tu biblioteca</h2><div class="pills">${pills}</div>${b}`);
 }
 function openPl(x){
  push(); const f=x==='fav', l=f?{name:'Favoritos',tracks:fav}:lists[x];
@@ -370,24 +372,25 @@ async function findVideo(t){
  }catch(e){toast('YouTube no responde (¿clave o cuota?)');return null}
 }
 async function playCur(){
- const t=queue[qi]; if(!t)return; cur=t; addRec(t); const my=++tok; stopAll(); bar(); markNow();
+ const t=queue[qi]; if(!t)return; cur=t; addRec(t); wantPlay=true; const my=++tok; stopAll(); bar(); markNow();
  if(t.src==='au')return playAudio(t.stream,'Completa · Audius',true);
  if(key){loadYT(); const v=await findVideo(t); if(my!==tok)return; if(v&&window.YT&&YT.Player){return playYT(v)}}
  if(my===tok)playAudio(t.preview,'Preview 30 s');
 }
 const play=(l,i)=>{queue=l.slice();qi=i;playCur()};
 const next=auto=>{
- if(auto===true&&sleepEnd){sleepEnd=false;$('#nsl').classList.remove('act');stopAll();setPP(false);toast('Temporizador: música parada. Buenas noches');return}
+ if(auto===true&&sleepEnd){sleepEnd=false;$('#nsl').classList.remove('act');wantPlay=false;stopAll();setPP(false);toast('Temporizador: música parada. Buenas noches');return}
  if(auto===true&&repeat===2){playCur();return}
  if(shuffle&&queue.length>1){hist.push(qi);if(hist.length>50)hist.shift();let n;do{n=Math.floor(Math.random()*queue.length)}while(n===qi);qi=n;return playCur()}
  if(qi<queue.length-1){qi++;playCur()}
  else if(repeat===1&&queue.length){qi=0;playCur()}
- else{stopAll();setPP(false)}
+ else{wantPlay=false;stopAll();setPP(false)}
 };
 const prev=()=>{if(pos().c>3){seek(0)}else if(shuffle&&hist.length){qi=hist.pop();playCur()}else if(qi>0){qi--;playCur()}};
 const isPlaying=()=>mode==='yt'?(yt&&yt.getPlayerState&&yt.getPlayerState()===1):(mode==='au'&&!audio.paused);
 function toggle(){
  if(!cur)return;
+ wantPlay=!isPlaying();
  if(mode==='yt'&&yt)isPlaying()?yt.pauseVideo():yt.playVideo(); else isPlaying()?audio.pause():audio.play().catch(()=>{});
 }
 function pos(){
@@ -586,8 +589,16 @@ const nv=$('#nvol');
 nv.addEventListener('input',()=>{vl.value=nv.value;vl.dispatchEvent(new Event('input'));nv.style.setProperty('--p',nv.value+'%')});
 $('#np').addEventListener('scroll',layoutNP);addEventListener('resize',layoutNP);
 /* ---------- cola, temporizador y compartir ---------- */
-let sleepAt=0,sleepEnd=false;
-function pauseAll(){try{if(mode==='yt'&&yt&&yt.pauseVideo)yt.pauseVideo()}catch(e){}audio.pause()}
+let sleepAt=0,sleepEnd=false,wantPlay=false;
+document.addEventListener('visibilitychange',()=>{
+ if(document.visibilityState!=='visible'||!wantPlay||!cur)return;
+ setTimeout(()=>{
+  if(isPlaying())return;
+  try{if(mode==='yt'&&yt&&yt.playVideo)yt.playVideo();else if(mode==='au')audio.play().catch(()=>{})}catch(e){}
+  setTimeout(()=>{if(wantPlay&&cur&&!isPlaying())toast('Pulsa play para seguir')},1800);
+ },400);
+});
+function pauseAll(){wantPlay=false;try{if(mode==='yt'&&yt&&yt.pauseVideo)yt.pauseVideo()}catch(e){}audio.pause()}
 function qDlg(){
  if(!queue.length)return toast('La cola está vacía');
  dlg(`<h3>Cola · ${queue.length}</h3><div class="ql">${queue.map((t,i)=>`<div class="qi ${i===qi?'now':''}" data-qj="${i}"><img src="${esc(t.art)}" alt=""><div class="m"><b>${esc(t.title)}</b><span>${esc(t.artist)}</span></div><button class="ic" data-qu="${i}" aria-label="Subir"><svg viewBox="0 0 24 24"><path d="M6 15l6-6 6 6"/></svg></button><button class="ic" data-qx="${i}" aria-label="Quitar">✕</button></div>`).join('')}</div><button class="btn g" data-close>Cerrar</button>`);
