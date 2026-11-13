@@ -4,6 +4,10 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Sono</title>
+<link rel="manifest" href="manifest.json">
+<link rel="icon" type="image/png" href="icon-192.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta name="theme-color" content="#0e0e12">
 <style>
 :root{--bg:#0e0e12;--panel:#17171d;--p2:#202029;--line:#2a2a35;--text:#f4f3f8;--mut:#9b99a9;--acc:#a238ff;--acc2:#ff3d81;--side:#0a0a0d;--np1:#2c1850;--c2:#ffffff0f;--ppc:#111;--rail:#3a3a48;--thumb:#fff;--hi:#202029;--btn:var(--acc);--btnc:#fff;--pb:transparent;color-scheme:dark}
 :root[data-theme=radio]{--bg:#e9eff6;--panel:#fff;--p2:#fff;--line:#cfdbe8;--text:#10294a;--mut:#6b7f95;--acc:#ff5a4a;--acc2:#ff5a4a;--side:#fff;--np1:#c9d9ea;--c2:#10294a0d;--ppc:#fff;--rail:#c3d1e0;--thumb:#10294a;--hi:#d9e4ef;--btn:#10294a;--pb:#cfdbe8;color-scheme:light}
@@ -161,6 +165,10 @@ dialog h3+.st{border-top:0;padding-top:4px}
 dialog p b{color:var(--text)}
 .eqr{display:grid;grid-template-columns:104px minmax(0,1fr) 30px;gap:8px;align-items:center;font-size:13px;margin:6px 0}
 .eqr b{text-align:right;margin:0!important}
+#blk{position:fixed;inset:0;z-index:60;background:#000;display:flex;align-items:flex-end;justify-content:center;padding-bottom:48px;touch-action:manipulation;-webkit-user-select:none;user-select:none}
+#blk[hidden]{display:none}
+#blk span{color:#666;font-size:14px;opacity:0;transition:opacity .5s}
+#blk.hint span{opacity:1}
 @media(max-width:760px){
 #app{grid-template-columns:1fr;grid-template-rows:1fr auto auto}
 aside{grid-row:3;grid-column:1;flex-direction:row;padding:6px 8px calc(6px + env(safe-area-inset-bottom));justify-content:space-around;border-top:1px solid var(--line)}
@@ -213,12 +221,13 @@ main{grid-column:1;padding:0 14px 20px}
  <div class="bar"><span id="ntc">0:00</span><input type="range" id="nseek" min="0" max="1000" value="0"><span id="ntd">0:00</span></div>
  <div class="btns"><button class="ic sr" id="nsh" aria-label="Aleatorio"><svg viewBox="0 0 24 24"><path d="M3 6h3.5c3 0 4.5 2 6 6s3 6 6 6H21M3 18h3.5c1.6 0 2.8-.6 3.8-1.7M13.7 7.7C14.7 6.6 16 6 17.5 6H21M18 3l3 3-3 3M18 15l3 3-3 3"/></svg></button><button class="ic" id="npv" aria-label="Anterior"><svg viewBox="0 0 24 24"><path d="M6 6h2v12H6zM9.5 12l8.5 6V6z"/></svg></button><button id="npp" aria-label="Reproducir"></button><button class="ic" id="nnx" aria-label="Siguiente"><svg viewBox="0 0 24 24"><path d="M16 6h2v12h-2zM6 18l8.5-6L6 6z"/></svg></button><button class="ic sr" id="nrp" data-r="0" aria-label="Repetir"><svg viewBox="0 0 24 24"><path d="M17 2l4 4-4 4M3 11V9a3 3 0 0 1 3-3h15M7 22l-4-4 4-4M21 13v2a3 3 0 0 1-3 3H3"/></svg></button></div>
  <div class="npv"><svg viewBox="0 0 24 24"><path d="M3 9v6h4l5 4V5L7 9z"/><path d="M16 8.5a5 5 0 0 1 0 7" fill="none" stroke="currentColor" stroke-width="2"/></svg><input type="range" id="nvol" min="0" max="100" value="80" aria-label="Volumen"></div>
- <div class="acts"><button class="pill" id="nq">Cola</button><button class="pill" id="nsl">Dormir</button><button class="pill" id="nsr">Compartir</button><button class="pill" id="neq">Ecualizador</button></div>
+ <div class="acts"><button class="pill" id="nq">Cola</button><button class="pill" id="nsl">Dormir</button><button class="pill" id="nsr">Compartir</button><button class="pill" id="neq">Ecualizador</button><button class="pill" id="nbk">Pantalla negra</button></div>
  <div class="c2" id="nin"></div>
  <div class="c2" id="nbio" hidden></div>
  <div class="c2"><div class="lh"><b>Letra</b><span id="nlo" hidden><button class="pill" data-off="0.5">Más pronto</button> <button class="pill" data-off="-0.5">Más tarde</button></span></div><div id="nlbox"><div id="nlyr"></div></div><p>Letras: LRCLIB (comunidad)</p></div>
 </section>
 <dialog id="dlg"></dialog>
+<div id="blk" hidden><span>Toca dos veces para volver</span></div>
 <div id="toast"></div>
 
 <script>
@@ -365,7 +374,7 @@ function settings(){
  dlg(`<h3>Ajustes</h3>
  <div class="st"><h4>Apariencia</h4><div class="pills" style="margin:0">${[['violeta','Violeta'],['radio','Radio'],['medianoche','Medianoche'],['bosque','Bosque']].map(([k,n])=>`<button class="pill ${th===k?'on':''}" data-tm="${k}">${n}</button>`).join('')}</div></div>
  <div class="st"><h4>Canciones completas</h4><p>Para oír las canciones enteras hace falta una API key gratuita de YouTube. Se guarda solo en este dispositivo.</p><input type="password" id="kin" placeholder="Pega aquí tu API key (AIza…)" value="${esc(key)}"><p>Créala en <a href="https://console.cloud.google.com/apis/library/youtube.googleapis.com" target="_blank" rel="noopener">Google Cloud</a>: activa «YouTube Data API v3» y crea una clave de API.</p><button class="btn" data-savekey>Guardar clave</button><button class="btn g" data-guide>Guía paso a paso</button></div>
- <div class="st"><h4>Acerca de Sono</h4><p>Creada por <b>Anna</b> y <b>Claude</b> (Anthropic). Hecha con cariño, paso a paso.</p><p>Datos de iTunes, YouTube, Deezer, Audius, LRCLIB y Wikipedia.</p><p>Versión 1.1</p></div>
+ <div class="st"><h4>Acerca de Sono</h4><p>Creada por <b>Anna</b> y <b>Claude</b> (Anthropic). Hecha con cariño, paso a paso.</p><p>Datos de iTunes, YouTube, Deezer, Audius, LRCLIB y Wikipedia.</p><p>Versión 1.2</p></div>
  <button class="btn g" data-close>Cerrar</button>`);
 }
 function dlg(h){const d=$('#dlg');d.innerHTML=h;if(!d.open)d.showModal()}
@@ -670,7 +679,7 @@ function fillArtists(){
 }
 $('#pl2').onclick=$('#npl').onclick=()=>{if(cur){pend=cur;addDlg()}};
 /* ---------- temas ---------- */
-const applyTheme=t=>{document.documentElement.dataset.theme=t;store.set('theme',t)};
+const applyTheme=t=>{document.documentElement.dataset.theme=t;store.set('theme',t);try{document.querySelector('meta[name=theme-color]').content=getComputedStyle(document.documentElement).getPropertyValue('--bg').trim()||'#0e0e12'}catch(e){}};
 applyTheme(store.get('theme','violeta'));
 
 /* ---------- música del dispositivo ---------- */
@@ -718,6 +727,23 @@ const applyEQ=()=>{eq.forEach((b,i)=>b.gain.value=gains[i]);store.set('eq',gains
 function eqDlg(){dlg(`<h3>Ecualizador</h3><p>Se aplica a la música de tu dispositivo. YouTube no deja modificar su sonido.</p><div class="pills">${Object.keys(PRES).map(k=>`<button class="pill" data-pre="${k}">${k}</button>`).join('')}</div>${BANDS.map(([n],i)=>`<div class="eqr"><span>${n}</span><input type="range" min="-12" max="12" step="1" value="${gains[i]}" data-eq="${i}"><b>${gains[i]}</b></div>`).join('')}<button class="btn g" data-close>Cerrar</button>`)}
 document.addEventListener('input',e=>{const t=e.target;if(t.dataset&&t.dataset.eq!==undefined){gains[+t.dataset.eq]=+t.value;t.nextElementSibling.textContent=t.value;applyEQ()}});
 $('#neq').onclick=eqDlg;
+/* ---------- pantalla negra ---------- */
+let wl=null,lastTap=0,hintT=0;
+const blk=$('#blk');
+async function lockOn(){try{if(navigator.wakeLock&&!wl){wl=await navigator.wakeLock.request('screen');wl.addEventListener('release',()=>{wl=null})}}catch(e){}}
+function lockOff(){try{if(wl)wl.release()}catch(e){}wl=null}
+function showHint(){blk.classList.add('hint');clearTimeout(hintT);hintT=setTimeout(()=>blk.classList.remove('hint'),2500)}
+function blackOn(){
+ blk.hidden=false;showHint();lockOn();
+ try{const r=document.documentElement.requestFullscreen&&document.documentElement.requestFullscreen({navigationUI:'hide'});if(r&&r.catch)r.catch(()=>{})}catch(e){}
+}
+function blackOff(){
+ blk.hidden=true;blk.classList.remove('hint');lockOff();
+ try{if(document.fullscreenElement)document.exitFullscreen()}catch(e){}
+}
+blk.addEventListener('pointerup',()=>{const n=Date.now();if(n-lastTap<450){lastTap=0;blackOff()}else{lastTap=n;showHint()}});
+document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible'&&!blk.hidden)lockOn()});
+$('#nbk').onclick=blackOn;
 syncSR();setPP(false);loadYT();home();
 </script>
 </body>
